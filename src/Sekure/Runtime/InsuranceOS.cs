@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Sekure.Runtime
 {
-    public class InsuranceOS
+    public class InsuranceOS : IInsuranceOS
     {
         private string apiUrl = string.Empty;
         private string apiKey = string.Empty;
@@ -29,10 +29,10 @@ namespace Sekure.Runtime
 
         private HttpClient GetClient(string customerEmail)
         {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("skr-key", apiKey);
-            client.DefaultRequestHeaders.Add("customer-email", customerEmail);
-            return client;
+            _client.DefaultRequestHeaders.Add("skr-key", apiKey);
+            _client.DefaultRequestHeaders.Add("customer-email", customerEmail);
+
+            return _client;
         }
 
         #region Product
@@ -118,7 +118,7 @@ namespace Sekure.Runtime
             return stage;
         }
 
-        public async Task<string> GetStage(Guid sessionId)
+        public async Task<string> GetProductStage(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Stage/{sessionId}");
 
@@ -152,7 +152,7 @@ namespace Sekure.Runtime
             return responsePayment;
         }
 
-        public async Task<PaymentStatus> GetStatus(PaymentDetail paymentDetail)
+        public async Task<PaymentStatus> GetPaymentStatus(PaymentDetail paymentDetail)
         {
             string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
 
@@ -169,7 +169,7 @@ namespace Sekure.Runtime
             return paymentStatus;
         }
 
-        public async Task<PaymentGatewayProduct> GetConfiguration(string paymentGatewayName, string productName)
+        public async Task<PaymentGatewayProduct> GetPaymentGatewayConfiguration(string paymentGatewayName, string productName)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Payment/Configuration/paymentGatewayName={paymentGatewayName}&productName={productName}");
 
