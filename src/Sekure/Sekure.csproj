@@ -6,8 +6,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2021</Copyright>
     <PackageTags>Insurance</PackageTags>
-    <PackageIcon>logo.jpg</PackageIcon>
-    <Version>1.0.2</Version>
+    <PackageIcon>logo.png</PackageIcon>
+    <Version>1.0.3</Version>
     <Description></Description>
     <RepositoryUrl>https://github.com/sekure-insuretech/sekure-sdk-dotnet</RepositoryUrl>
     <PackageProjectUrl>https://api.sekure.com.co</PackageProjectUrl>
@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\logo.jpg">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="Resources\logo.jpg">
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
