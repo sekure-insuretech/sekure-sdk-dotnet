@@ -118,7 +118,7 @@ namespace Sekure.Runtime
             return stage;
         }
 
-        public async Task<string> GetProductStage(Guid sessionId)
+        public async Task<ProductStage> GetProductStage(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Stage/{sessionId}");
 
@@ -127,9 +127,10 @@ namespace Sekure.Runtime
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
 
-            string stage = await response.Content.ReadAsStringAsync();
+            string productStageJson = await response.Content.ReadAsStringAsync();
+            ProductStage productStage = JsonConvert.DeserializeObject<ProductStage>(productStageJson);
 
-            return stage;
+            return productStage;
         }
 
         #endregion
