@@ -83,5 +83,11 @@ namespace Sekure.Runtime
         /// /// <param name="paymentDetail">Important payment detail. 
         /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
         Task<PaymentStatus> GetPaymentStatus(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Returns information about the any additional information of a product.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        Task<string> AskSekure(object parameters, int productId, string productName);
     }
 }
