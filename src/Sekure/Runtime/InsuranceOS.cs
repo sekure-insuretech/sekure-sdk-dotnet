@@ -186,5 +186,23 @@ namespace Sekure.Runtime
         }
 
         #endregion
+
+        #region AskSekure
+        public async Task<string> AskSekure(object parameters, int productId, string productName)
+        {
+            string jsonParameters = JsonConvert.SerializeObject(parameters);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/AskSekure/productId={productId}&productName={productName}", new StringContent(jsonParameters, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync();
+
+            return responsePayment;
+        }
+        #endregion
     }
 }
