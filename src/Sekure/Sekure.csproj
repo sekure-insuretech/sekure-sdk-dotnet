@@ -7,10 +7,12 @@
     <Copyright>2021</Copyright>
     <PackageTags>Insurance</PackageTags>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <Description>Insurance as a service. Official Sekure SDK for .Net</Description>
     <RepositoryUrl>https://github.com/sekure-insuretech/sekure-sdk-dotnet</RepositoryUrl>
     <PackageProjectUrl>https://api.sekure.com.co</PackageProjectUrl>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
