@@ -27,14 +27,6 @@ namespace Sekure.Runtime
             return _client;
         }
 
-        private HttpClient GetClient(string customerEmail)
-        {
-            _client.DefaultRequestHeaders.Add("skr-key", apiKey);
-            _client.DefaultRequestHeaders.Add("customer-email", customerEmail);
-
-            return _client;
-        }
-
         #region Product
 
         public async Task<List<ProductReference>> GetProducts()
@@ -68,11 +60,11 @@ namespace Sekure.Runtime
             return product;
         }
 
-        public async Task<QuotedProduct> Quote(ExecutableProduct executableProduct, string customerEmail)
+        public async Task<QuotedProduct> Quote(ExecutableProduct executableProduct)
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);
 
-            HttpResponseMessage response = await GetClient(customerEmail).PostAsync($"{apiUrl}/Products/Quote", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Quote", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
             {

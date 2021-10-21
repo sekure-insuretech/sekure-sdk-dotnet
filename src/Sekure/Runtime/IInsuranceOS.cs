@@ -31,8 +31,7 @@ namespace Sekure.Runtime
         /// </summary>
         /// <param name="executableProduct">This is the object necessary to execute the actions (quote, confirm, emit) in the product purchase process. 
         /// It has essential information about the product, policyholder, and necessary parameters.</param>
-        /// <param name="customerEmail">This is the email you have registered with sekure for the consumption of our products.</param>
-        Task<QuotedProduct> Quote(ExecutableProduct executableProduct, string customerEmail);
+        Task<QuotedProduct> Quote(ExecutableProduct executableProduct);
 
         /// <summary>
         /// Confirms the purchase of the product and allows to deliver a policy to the policy holder who was registered in the quote.
