@@ -11,6 +11,8 @@ namespace Sekure.Models
         public List<Quote> Quotes { get; set; }
         public bool PaymentGatewaySkr { get; set; }
 
+        public QuotedProduct() { }
+
         public QuotedProduct(ProductDetail productDetail, PolicyHolder policyHolder, List<Quote> quotes, bool paymentGatewaySkr)
         {
             ProductDetail = productDetail;

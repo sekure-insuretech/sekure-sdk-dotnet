@@ -43,11 +43,15 @@ namespace Sekure.Models
         public string DescriptionResult { get; set; }
         public string DeductibleResult { get; set; }
         public string IsAssistanceResult { get; set; }
+
+        public CoverageResultAPI() { }
     }
     public class InfoResultAPI
     {
         public string NameResult { get; set; }
         public string ValueResult { get; set; }
         public string ComentsResult { get; set; }
+
+        public InfoResultAPI() { }
     }
 }

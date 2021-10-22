@@ -10,5 +10,7 @@ namespace Sekure.Models
         public string PaymentGatewayInformation { get; set; }
         public string Status { get; set; }
         public string CoverageNote { get; set; }
+
+        public PaymentStatus() { }
     }
 }

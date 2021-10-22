@@ -9,5 +9,7 @@ namespace Sekure.Models
         public Guid TransactionSkrId { get; set; }
         public Guid? ClientSkrId { get; set; }
         public object Request { get; set; }
+
+        public PaymentDetail() { }
     }
 }

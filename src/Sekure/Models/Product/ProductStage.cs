@@ -18,6 +18,8 @@ namespace Sekure.Models
         public DateTime? BeginDate { get; set; }
         public string CompanyTitle { get; set; }
 
+        public ProductStage() { }
+
         public ProductStage(string firstName, string secondName, string lastName, string secondLastName, string gender, DateTime birthdate, string email, string policyTypeName, string stage, DateTime dateCreate, string value, DateTime? beginDate, string companyTitle)
         {
             FirstName = firstName;

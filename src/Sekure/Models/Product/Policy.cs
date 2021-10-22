@@ -9,6 +9,8 @@ namespace Sekure.Models
         public PolicyHolder PolicyHolder { get; set; }
         public Quote ConfirmedQuote { get; set; }
 
+        public Policy() { }
+
         public Policy(Guid sessionId, ProductDetail productDetail, PolicyHolder policyHolder, Quote confirmedQuote)
         {
             SessionId = sessionId;
