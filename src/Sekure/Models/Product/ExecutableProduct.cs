@@ -11,11 +11,12 @@ namespace Sekure.Models
 
         public ExecutableProduct() { }
 
-        public ExecutableProduct(ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters)
+        public ExecutableProduct(ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters, string marketingTracking)
         {
             ProductDetail = productDetail;
             PolicyHolder = policyHolder;
             Parameters = parameters;
+            MarketingTracking = marketingTracking;
         }
     }
 
