@@ -110,6 +110,20 @@ namespace Sekure.Runtime
             return stage;
         }
 
+        public async Task<string> Cancel(Guid sessionId)
+        {
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Cancel/{sessionId}", new StringContent(""));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            return result;
+        }
+
         public async Task<ProductStage> GetProductStage(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Stage/{sessionId}");

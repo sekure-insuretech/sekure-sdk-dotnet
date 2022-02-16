@@ -54,6 +54,13 @@ namespace Sekure.Runtime
         Task<string> Emit(ExecutableProduct executableProduct, Guid sessionId);
 
         /// <summary>
+        /// performs the cancellation of the policy purchase flow.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<string> Cancel(Guid sessionId);
+
+        /// <summary>
         /// Allows to know in what state of the process the policy is
         /// Send a GetAsync request to InsuranceOS API./>.
         /// </summary>
