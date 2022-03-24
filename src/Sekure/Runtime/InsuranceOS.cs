@@ -112,8 +112,8 @@ namespace Sekure.Runtime
 
         public async Task<string> Cancel(Guid sessionId)
         {
-            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Cancel/{sessionId}");
-
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{apiUrl}/Products/Cancel/{sessionId}");
+            HttpResponseMessage response = await GetClient().SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
