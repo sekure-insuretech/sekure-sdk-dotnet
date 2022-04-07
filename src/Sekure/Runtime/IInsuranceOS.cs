@@ -68,6 +68,13 @@ namespace Sekure.Runtime
         Task<ProductStage> GetProductStage(Guid sessionId);
 
         /// <summary>
+        /// Return the product associated with the session ID 
+        /// Send a GetAsync request to the Insurance API
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<Product> GetProductBySessionId(Guid sessionId);
+
+        /// <summary>
         /// Allows to obtain the configuration that we must use for the payment gateway that is going to be used
         /// </summary>
         /// /// <param name="paymentGatewayName">Name of the payment gateway</param>

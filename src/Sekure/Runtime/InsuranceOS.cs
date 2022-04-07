@@ -139,6 +139,21 @@ namespace Sekure.Runtime
             return productStage;
         }
 
+        public async Task<Product> GetProductBySessionId(Guid sessionId)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Session/{sessionId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string productBySessionsIdJson = await response.Content.ReadAsStringAsync();
+            Product product = JsonConvert.DeserializeObject<Product>(productBySessionsIdJson);
+
+            return product;
+        }
+
         #endregion
 
         #region Payment
