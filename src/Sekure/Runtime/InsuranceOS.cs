@@ -139,19 +139,22 @@ namespace Sekure.Runtime
             return productStage;
         }
 
-        public async Task<ProductBySessionId> GetProductBySessionId(Guid sessionId)
+        #endregion
+
+        #region Estimate
+        public async Task<Estimate> GetEstimateBySessionId(Guid sessionId)
         {
-            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Session/{sessionId}");
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Estimates/Session/{sessionId}");
 
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
 
-            string productBySessionsIdJson = await response.Content.ReadAsStringAsync();
-            ProductBySessionId product = JsonConvert.DeserializeObject<ProductBySessionId>(productBySessionsIdJson);
+            string estimateBySessionIdJson = await response.Content.ReadAsStringAsync();
+            Estimate estimate = JsonConvert.DeserializeObject<Estimate>(estimateBySessionIdJson);
 
-            return product;
+            return estimate;
         }
 
         #endregion
