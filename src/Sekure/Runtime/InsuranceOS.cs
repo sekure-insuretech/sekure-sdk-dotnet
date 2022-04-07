@@ -139,7 +139,7 @@ namespace Sekure.Runtime
             return productStage;
         }
 
-        public async Task<Product> GetProductBySessionId(Guid sessionId)
+        public async Task<ProductBySessionId> GetProductBySessionId(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Session/{sessionId}");
 
@@ -149,7 +149,7 @@ namespace Sekure.Runtime
             }
 
             string productBySessionsIdJson = await response.Content.ReadAsStringAsync();
-            Product product = JsonConvert.DeserializeObject<Product>(productBySessionsIdJson);
+            ProductBySessionId product = JsonConvert.DeserializeObject<ProductBySessionId>(productBySessionsIdJson);
 
             return product;
         }

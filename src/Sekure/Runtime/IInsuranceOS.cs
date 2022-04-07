@@ -72,7 +72,7 @@ namespace Sekure.Runtime
         /// Send a GetAsync request to the Insurance API
         /// </summary>
         /// <param name="sessionId">This is the session id with which the quote was registered.</param>
-        Task<Product> GetProductBySessionId(Guid sessionId);
+        Task<ProductBySessionId> GetProductBySessionId(Guid sessionId);
 
         /// <summary>
         /// Allows to obtain the configuration that we must use for the payment gateway that is going to be used
