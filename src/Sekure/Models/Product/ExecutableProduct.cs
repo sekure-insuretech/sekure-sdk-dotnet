@@ -6,15 +6,13 @@ namespace Sekure.Models
     {
         public string MarketingTracking { get; set; }
         public ProductDetail ProductDetail { get; set; }
-        public PolicyHolder PolicyHolder { get; set; }
         public List<InputParameter> Parameters { get; set; }
 
         public ExecutableProduct() { }
 
-        public ExecutableProduct(ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters, string marketingTracking)
+        public ExecutableProduct(ProductDetail productDetail, List<InputParameter> parameters, string marketingTracking)
         {
             ProductDetail = productDetail;
-            PolicyHolder = policyHolder;
             Parameters = parameters;
             MarketingTracking = marketingTracking;
         }
