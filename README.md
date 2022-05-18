@@ -24,7 +24,6 @@ Una vez instalado en el archivo startup.cs debes de registrar el servicio del SD
 ````
 ### UrlInsuranceOS: 
 Es la url de los siguientes ambientes
->  - stage:           https://api.sekure.com.co/osstage/
 >  - Pre-producción:  https://api.sekure.com.co/ospreprod/
 >  - Producción:      https://api.sekure.com.co/os/
   
