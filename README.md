@@ -29,10 +29,10 @@ Es la url de los siguientes ambientes
 >  - Producción:      https://api.sekure.com.co/os/
   
 ### KeySubscriptionInsuranceOS: 
-Es la suscripción que debe de tener el cliente para utilizar el sdk de sekure, sin una suscripción no es posible utilizar los servicios del sekure
+Es la suscripción que debe de tener el cliente para utilizar el sdk de sekure, sin una suscripción no es posible utilizar los servicios de sekure
 
 # Consumir del NuGet
-En el archivo .cs que vayas a consumirlo debes de crearle su constructo y realizar la inyeccion de dependencias como se muestra a continuación
+En el archivo .cs que vayas a consumirlo debes de crearle su constructo y realizar la inyeccion de dependencias
 ````
     [ApiController]
     [Route("[controller]")]
@@ -59,7 +59,7 @@ Con el descubrimiento del producto se identifica cuales son los input parameter 
 - productId: Es el id del producto a cotizar
  
  ### Cotización
-Para la cotización se realiza una instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento como se muestra a continuación
+Para la cotización se realiza una instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento
 
 ````
     public async Task<IActionResult> Discovery(Product productDiscovery)
@@ -76,7 +76,7 @@ Para la cotización se realiza una instancia del modelo del SDK ExecutableProduc
 ````
 
 ### Confirmar
-Para confirmar se realiza nuevamente la instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento como se muestra a continuación, también necesitará la sessiónId de la cotización a confirmar
+Para confirmar se realiza nuevamente la instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento, también necesitará la sessiónId de la cotización seleccionada.
 
 ````
     public async Task<IActionResult> Confirm(Product productDiscovery, Guid sessionId)
@@ -91,10 +91,10 @@ Para confirmar se realiza nuevamente la instancia del modelo del SDK ExecutableP
         return Ok(quote);
     }
 ````
-- sessionId: Es el id del producto seleccionado
+- sessionId: Es el id del producto seleccionado, este sessionId lo obtiene en el response de cotizar
   
 ### Emitir
-Para la emisión es similar a los dos objetos anteriores, se debe de pasar el executableProduct y sessionId de la cotización seleccionada
+Para la emisión es similar a los dos métodos anteriores, se debe de pasar el executableProduct y sessionId de la cotización seleccionada
 
 ````
     public async Task<IActionResult> ToEmit(Product productDiscovery, Guid sessionId)
@@ -109,7 +109,9 @@ Para la emisión es similar a los dos objetos anteriores, se debe de pasar el ex
         return Ok(emit);
     }
 ````
-- sessionId: Es el id del producto seleccionado
+- sessionId: Es el id del producto seleccionado, este sessionId lo obtiene en el response de cotizar
 
 #### **NOTA**: 
 >Los input parameter de deben de llenar en el campo de InputParameterValue cuando no son de tipo object. Cuando son de tipo object se debe de llenar los ParameterSchema en su propiedad PropertyValue 
+>
+>Este SDK cuenta con más servicios como Pay y AskSekure que tienen el mismo comportamiento que deben de utilizarsen de acuerdo a la configuración del producto
