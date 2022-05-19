@@ -494,7 +494,7 @@ Respuesta de la variable **confirm**
 
 > **Parametros del emitir**
  
-> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **toEmit** requiere envierle los siguientes input parameter.
+> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **toEmit** se requiere envierles los siguientes input parameter.
  
 >````
 >....
@@ -536,7 +536,3 @@ Respuesta de la variable **emit**
 ````
 Proceso de emision realizado correctamente. Negociación completada exitosamente.
 ````
-
-#### **NOTA**: 
->
->Este SDK cuenta con más servicios como Pay y AskSekure que tienen el mismo comportamiento que deben de utilizarsen de acuerdo a la configuración del producto
