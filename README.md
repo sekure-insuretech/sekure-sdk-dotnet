@@ -8,7 +8,7 @@ Actualmente tiene más de 3.000 descargas y constantemente se actualiza.
 Si estas en visual studio puedes hacerlo a traves de la consola del **Package Manager** o el **Manage NuGet Packages for soluction**, en este caso vamos a ver como se instala con la consola del **Package Manager**
 
 ### Package Manager
-La herramienta de package manager la encuentra en la barra de menú - Tools - NuGet packate manager - packate manager console.
+La herramienta de package manager la encuentra en la barra de menú - Tools - NuGet package manager - Package manager console.
 Selecciona el proyecto donde desea instalar el sdk de sekure y escribes la siguiente linea de código
 `Install-Package Sekure -Version {Número_de_versión}` donde **Número_de_versión** es el número de la versión que desea instalar
  
@@ -31,7 +31,7 @@ Es la url de los siguientes ambientes
 Es la suscripción que debe de tener el cliente para utilizar el sdk de sekure, sin una suscripción no es posible utilizar los servicios de sekure
 
 # Consumir del NuGet
-En el archivo .cs que vayas a consumirlo debes de crearle su constructo y realizar la inyeccion de dependencias
+En el archivo .cs que vayas a consumir los servicios del SDK debes de crear el constructor y realizar la inyeccion de dependencias
 ````
     [ApiController]
     [Route("[controller]")]
@@ -46,7 +46,7 @@ En el archivo .cs que vayas a consumirlo debes de crearle su constructo y realiz
     }
 ````
 ### Descubrimiento del producto
-Con el descubrimiento del producto se identifica cuales son los input parameter que se requiere para cotizar, confirmar y emitir
+Con el descubrimiento se identifica como esta configurado el producto cuales son los input parameter que se requiere para cotizar, confirmar y emitir
 ````
     public async Task<IActionResult> Discovery(int productId)
     {
@@ -56,12 +56,107 @@ Con el descubrimiento del producto se identifica cuales son los input parameter 
 ````
 
 - productId: Es el id del producto a cotizar
+
+La variable productDiscovery que es tipo **Product** recibe un estructura similar al .json que se muestra a continuación
+````
+{
+    "productDetail": {
+        "productId": "{productId}",
+        "productName": "{productName}",
+        "policyTypeName": "{policyTypeName}",
+        "insuranceCompanyName": "{insuranceCompanyName}"
+    },
+    "policyHolder": [
+        {
+            "firstName": "{firstName}",
+            "secondName": "{secondName}",
+            "lastName": "{lastName}",
+            "secondLastName": "{secondLastName}",
+            "birthdate": "{birthdate}",
+            "gender": "{gender}",
+            "address": "{address}",
+            "identificationType": "{identificationType}",
+            "identificationNumber": "{identificationNumber}",
+            "maritalStatus": "{maritalStatus}",
+            "email": "{email}",
+            "phoneNumber": "{phoneNumber}"
+        },
+        {
+            "firstName": "{firstName}",
+            "address": "{address}",
+            "identificationType": "{identificationType}",
+            "identificationNumber": "{identificationNumber}",
+            "email": "{email}",
+            "phoneNumber": "{phoneNumber}"
+        }
+    ],
+    "quote": [],
+    "confirm": [
+        {
+            "name": "Policy Holder",
+            "inputParameterId": 480,
+            "inputParameterType": "Object",
+            "inputParameterValue": null,
+            "inputParameterDescription": "Información requerida para el tomador",
+            "inputParameterRequired": "true",
+            "showApi": true,
+            "inputParameterSchemaList": [
+                {
+                    "propertyId": "499",
+                    "propertyName": "Tipo de documento",
+                    "propertyValue": "",
+                    "propertyDescription": "Se debe de enviar el número que corresponda según el listado de opciones.",
+                    "propertyTypeDescription": "List",
+                    "propertyTypeId": 3,
+                    "propertyTypeListValue": "1 = Cédula ciudadanía, 2 = Cédula extranjería, 3 = NIT, 4 = Tarjeta de identidad, 5 = Pasaporte, 6 = Tarjeta del seguro social extranjeros, 7 = Sociedad extranjera sin Nit en Colombia, 8 = Fideicomiso",
+                    "propertyRequired": "true",
+                    "isAssistanceType": "false"
+                },
+                {
+                    "propertyId": "500",
+                    "propertyName": "Número de documento",
+                    "propertyValue": "",
+                    "propertyDescription": "Se debe de poner el número del documento seleccionado",
+                    "propertyTypeDescription": "Text",
+                    "propertyTypeId": 1,
+                    "propertyTypeListValue": "",
+                    "propertyRequired": "true",
+                    "isAssistanceType": "false"
+                }
+            ]
+        },
+        {
+            "name": "idplan",
+            "inputParameterId": 481,
+            "inputParameterType": "Numeric",
+            "inputParameterValue": null,
+            "inputParameterDescription": "Este hace referencia al Id del producto",
+            "inputParameterRequired": "true",
+            "showApi": true,
+            "inputParameterSchemaList": []
+        }
+    ],
+    "toEmit": [
+        {
+            "name": "Email",
+            "inputParameterId": 483,
+            "inputParameterType": "Text",
+            "inputParameterValue": null,
+            "inputParameterDescription": "Email del tomador",
+            "inputParameterRequired": "false",
+            "showApi": true,
+            "inputParameterSchemaList": []
+        }
+    ],
+    "askSekure": []
+}
+````
  
  ### Cotización
-Para la cotización se realiza una instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento
+Para la cotización se realiza una instancia del modelo SDK **ExecutableProduct** y se empieza a llenar sus propiedades.
 
 ````
-    public async Task<IActionResult> Discovery(Product productDiscovery)
+    public async Task<IActionResult> Quotation(Product productDiscovery)
     {
         ExecutableProduct executableProduct = new ExecutableProduct()
         {
@@ -73,31 +168,342 @@ Para la cotización se realiza una instancia del modelo del SDK ExecutableProduc
         return Ok(quote);
     }
 ````
+ > **Parametros del quote**
+ > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **quote** no se requiere envierle ningún input parameter.
+ >````
+ >....
+ >"quote": [],
+ >....
+ >````
+Respuesta de la variable **quote**
+````
+{
+    "marketingTracking": null,
+    "sessionId": "7bccca61-e5bd-40a9-212c-08da3943ffbe",
+    "productDetail": {
+        "productId": 138,
+        "productName": "Asistencia Bolso Protegido",
+        "policyTypeName": "Asistencias",
+        "insuranceCompanyName": "Andi Asistencia"
+    },
+    "policyHolder": {
+        "firstName": "without getting",
+        "secondName": null,
+        "lastName": "without getting",
+        "secondLastName": null,
+        "birthdate": "0001-01-01T00:00:00",
+        "gender": "O",
+        "address": null,
+        "identificationType": "1",
+        "identificationNumber": "without getting",
+        "maritalStatus": null,
+        "email": "without getting",
+        "phoneNumber": "without getting"
+    },
+    "quotes": [
+        {
+            "sessionId": "7bccca61-e5bd-40a9-212c-08da3943ffbe",
+            "planId": "138",
+            "planNumber": null,
+            "planName": null,
+            "insuredValue": null,
+            "coverages": [
+                {
+                    "nameResult": "Hurto calificado de los dineros retirados de los Cajeros Electrónicos (de cualquier red), Corresponsales Bancarios, Caja Humana (fleteo).",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Falsificación o clonación de la tarjeta de Crédito y/o débito.",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Protección por uso indebido de la tarjeta de Crédito y/o débito y/o chequera, como consecuencia de robo, hurto y/o pérdida.",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Dańos Accidentales de compras efectuadas con las tarjetas de crédito y/o débito y/o chequera.",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Utilización forzada de la tarjeta y/o Chequeras (Paseo millonario).",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Cobertura a Bolso o billetera.",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                },
+                {
+                    "nameResult": "Hurto calificado de documentos: (Licencia de conducción, cédula, pasaporte, tarjeta de propiedad del vehículo, libreta militar, Carnet EPS y/o caja de compensación, carnet estudiantil, carnet laboral).",
+                    "valueResult": "$700.000",
+                    "descriptionResult": null,
+                    "deductibleResult": null,
+                    "isAssistanceResult": null
+                }
+            ],
+            "deductible": null,
+            "startDate": "19 mayo, 2022",
+            "termTime": "19 mayo, 2023",
+            "premiumAmount": "52236",
+            "premiumPaymentInterval": "0",
+            "beneficiaries": [],
+            "gracePeriodsList": [],
+            "additionalInfo": null,
+            "additionalInsured": null,
+            "policyNumber": null
+        }
+    ],
+    "paymentGatewaySkr": false
+}
+````
 
 ### Confirmar
-Para confirmar se realiza nuevamente la instancia del modelo del SDK ExecutableProduct y se empieza a llenar los input parameter de acuerdo al descubrimiento, también necesitará la sessiónId de la cotización seleccionada.
+ > **Parametros del quote**
+ > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **confirm** requiere envierle los siguientes input parameter.
+ >````
+ >....
+>"confirm": [
+>    {
+>        "name": "Policy Holder",
+>        "inputParameterId": 480,
+>        "inputParameterType": "Object",
+>        "inputParameterValue": null,
+>        "inputParameterDescription": "Información requerida para el tomador",
+>        "inputParameterRequired": "true",
+>        "showApi": true,
+>        "inputParameterSchemaList": [
+>            {
+>                "propertyId": "499",
+>                "propertyName": "Tipo de documento",
+>                "propertyValue": "",
+>                "propertyDescription": "Se debe de enviar el número que corresponda según el listado de opciones.",
+>                "propertyTypeDescription": "List",
+>                "propertyTypeId": 3,
+>                "propertyTypeListValue": "1 = Cédula ciudadanía, 2 = Cédula extranjería, 3 = NIT, 4 = Tarjeta de identidad, 5 = Pasaporte, 6 = Tarjeta del seguro social extranjeros, 7 = Sociedad extranjera sin Nit en Colombia, 8 = Fideicomiso",
+>                "propertyRequired": "true",
+>                "isAssistanceType": "false"
+>            },
+>            {
+>                "propertyId": "500",
+>                "propertyName": "Número de documento",
+>                "propertyValue": "",
+>                "propertyDescription": "Se debe de poner el número del documento seleccionado",
+>                "propertyTypeDescription": "Text",
+>                "propertyTypeId": 1,
+>                "propertyTypeListValue": "",
+>                "propertyRequired": "true",
+>                "isAssistanceType": "false"
+>            }
+>        ]
+>    },
+>    {
+>        "name": "idplan",
+>        "inputParameterId": 481,
+>        "inputParameterType": "Numeric",
+>        "inputParameterValue": null,
+>        "inputParameterDescription": "Este hace referencia al Id del producto",
+>        "inputParameterRequired": "true",
+>        "showApi": true,
+>        "inputParameterSchemaList": []
+>    }
+>   ],
+>....
+>````
+> **Ejemplo de la parametrización**
+> A continuación se crea un método básico de ejemplo para asignarle el valor a los input parameter 
+> ````
+> private void Parameterization(List<InputParameter> parameters)
+>{
+>    parameters.ForEach(parameter => 
+>    {
+>        if(parameter.Name == "idplan")
+>        {
+>            parameter.InputParameterValue = "2022";
+>        }
+>        else if(parameter.Name == "Policy Holder")
+>        {
+>            if(parameter.InputParameterSchemaList.Any())
+>            {
+>                parameter.InputParameterSchemaList.ForEach(parameterSchema => 
+>                {
+>                    if(parameterSchema.PropertyName == "Tipo de documento")
+>                    {
+>                        parameterSchema.PropertyValue = "1";
+>                    }
+>                    else if(parameterSchema.PropertyName == "Número de documento")
+>                    {
+>                        parameterSchema.PropertyValue = "10000000000";
+>                    }
+>                    else if(parameterSchema.PropertyName == "Email")
+>                    {
+>                        parameterSchema.PropertyValue = "test@sekure.com.co";
+>                    }
+>                });
+>            }
+>        }
+>    }); 
+>}
+> ````
+
+
+Método para **confirmar**
 
 ````
     public async Task<IActionResult> Confirm(Product productDiscovery, Guid sessionId)
     {
+        Parameterization(productDiscovery.Confirm);
         ExecutableProduct executableProduct = new ExecutableProduct()
         {
             ProductDetail = productDiscovery.ProductDetail,
             Parameters = productDiscovery.Confirm
         };
 
-        Policy quote = await _sekure.Confirm(executableProduct, sessionId);
-        return Ok(quote);
+        Policy confirm = await _sekure.Confirm(executableProduct, sessionId);
+        return Ok(confirm);
     }
 ````
 - sessionId: Es el id del producto seleccionado, este sessionId lo obtiene en el response de cotizar
   
+Respuesta de la variable **confirm**
+````
+{
+    "marketingTracking": null,
+    "sessionId": "7bccca61-e5bd-40a9-212c-08da3943ffbe",
+    "productDetail": {
+        "productId": 138,
+        "productName": "Asistencia Bolso Protegido",
+        "policyTypeName": "Asistencias",
+        "insuranceCompanyName": "Andi Asistencia"
+    },
+    "policyHolder": {
+        "firstName": "PrimerNombre",
+        "secondName": "SegundoNombre",
+        "lastName": "PrimerApellido",
+        "secondLastName": "SegundoApellido",
+        "birthdate": "2022-02-18T00:00:00Z",
+        "gender": "m",
+        "address": "Carrera 100 # 134 -10",
+        "identificationType": "1",
+        "identificationNumber": "1078985631",
+        "maritalStatus": "1",
+        "email": "prueba@email.com",
+        "phoneNumber": "3154789856"
+    },
+    "confirmedQuote": {
+        "planId": "138",
+        "planNumber": null,
+        "planName": null,
+        "insuredValue": null,
+        "coverages": [
+            {
+                "nameResult": "Hurto calificado de los dineros retirados de los Cajeros Electrónicos (de cualquier red), Corresponsales Bancarios, Caja Humana (fleteo).",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Falsificación o clonación de la tarjeta de Crédito y/o débito.",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Protección por uso indebido de la tarjeta de Crédito y/o débito y/o chequera, como consecuencia de robo, hurto y/o pérdida.",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Dańos Accidentales de compras efectuadas con las tarjetas de crédito y/o débito y/o chequera.",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Utilización forzada de la tarjeta y/o Chequeras (Paseo millonario).",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Cobertura a Bolso o billetera.",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            },
+            {
+                "nameResult": "Hurto calificado de documentos: (Licencia de conducción, cédula, pasaporte, tarjeta de propiedad del vehículo, libreta militar, Carnet EPS y/o caja de compensación, carnet estudiantil, carnet laboral).",
+                "valueResult": "$700.000",
+                "descriptionResult": null,
+                "deductibleResult": null,
+                "isAssistanceResult": null
+            }
+        ],
+        "deductible": null,
+        "startDate": "19 mayo, 2022",
+        "termTime": "19 mayo, 2023",
+        "premiumAmount": "52236",
+        "premiumPaymentInterval": "0",
+        "beneficiaries": [],
+        "gracePeriodsList": [],
+        "additionalInfo": [],
+        "additionalInsured": null,
+        "policyNumber": null
+    },
+    "status": "Created"
+}
+````
+
 ### Emitir
-Para la emisión es similar a los dos métodos anteriores, se debe de pasar el executableProduct y sessionId de la cotización seleccionada
+
+> **Parametros del emitir**
+ > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **toEmit** requiere envierle los siguientes input parameter.
+>````
+>....
+>    "toEmit": [
+>        {
+>            "name": "Email",
+>            "inputParameterId": 483,
+>            "inputParameterType": "Text",
+>            "inputParameterValue": null,
+>            "inputParameterDescription": "Email del tomador",
+>            "inputParameterRequired": "false",
+>            "showApi": true,
+>            "inputParameterSchemaList": []
+>        }
+>    ],
+>....
+>````
+
+Método para **emitir**
 
 ````
     public async Task<IActionResult> ToEmit(Product productDiscovery, Guid sessionId)
     {
+        Parameterization(productDiscovery.ToEmit);
         ExecutableProduct executableProduct = new ExecutableProduct()
         {
             ProductDetail = productDiscovery.ProductDetail,
@@ -110,7 +516,11 @@ Para la emisión es similar a los dos métodos anteriores, se debe de pasar el e
 ````
 - sessionId: Es el id del producto seleccionado, este sessionId lo obtiene en el response de cotizar
 
+Respuesta de la variable **emit**
+````
+Proceso de emision realizado correctamente. Negociación completada exitosamente.
+````
+
 #### **NOTA**: 
->Los input parameter de deben de llenar en el campo de InputParameterValue cuando no son de tipo object. Cuando son de tipo object se debe de llenar los ParameterSchema en su propiedad PropertyValue 
 >
 >Este SDK cuenta con más servicios como Pay y AskSekure que tienen el mismo comportamiento que deben de utilizarsen de acuerdo a la configuración del producto
