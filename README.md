@@ -46,7 +46,7 @@ En el archivo .cs que vayas a consumir los servicios del SDK debes de crear el c
     }
 ````
 ### Descubrimiento del producto
-Con el descubrimiento se identifica como esta configurado el producto cuales son los input parameter que se requiere para cotizar, confirmar y emitir
+El descubrimiento es la configuración del producto y se identifica cuales son los input parameter que se requiere para cotizar, confirmar y emitir
 ````
     public async Task<IActionResult> Discovery(int productId)
     {
@@ -153,7 +153,16 @@ La variable productDiscovery que es tipo **Product** recibe un estructura simila
 ````
  
  ### Cotización
-Para la cotización se realiza una instancia del modelo SDK **ExecutableProduct** y se empieza a llenar sus propiedades.
+ > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **quote** no se requiere envierle ningún input parameter.
+ > 
+ >````
+ >....
+ >"quote": [],
+ >....
+ >````
+
+
+Para la cotización se utiliza el método `await _sekure.Quote(executableProduct)` que recibe como parametro el modelo del SDK **ExecutableProduct**.
 
 ````
     public async Task<IActionResult> Quotation(Product productDiscovery)
@@ -168,23 +177,17 @@ Para la cotización se realiza una instancia del modelo SDK **ExecutableProduct*
         return Ok(quote);
     }
 ````
- > **Parametros del quote**
- > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **quote** no se requiere envierle ningún input parameter.
- >````
- >....
- >"quote": [],
- >....
- >````
+
 Respuesta de la variable **quote**
 ````
 {
     "marketingTracking": null,
     "sessionId": "7bccca61-e5bd-40a9-212c-08da3943ffbe",
     "productDetail": {
-        "productId": 138,
-        "productName": "Asistencia Bolso Protegido",
-        "policyTypeName": "Asistencias",
-        "insuranceCompanyName": "Andi Asistencia"
+        "productId": {productId},
+        "productName": "{productName}",
+        "policyTypeName": "{policyTypeName}",
+        "insuranceCompanyName": "{insuranceCompanyName}"
     },
     "policyHolder": {
         "firstName": "without getting",
@@ -275,10 +278,13 @@ Respuesta de la variable **quote**
 ````
 
 ### Confirmar
- > **Parametros del quote**
- > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **confirm** requiere envierle los siguientes input parameter.
- >````
- >....
+>
+> **Parametros de confirmar**
+> 
+> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **confirm** requiere envierle los siguientes input parameter.
+> 
+>````
+>....
 >"confirm": [
 >    {
 >        "name": "Policy Holder",
@@ -326,8 +332,11 @@ Respuesta de la variable **quote**
 >   ],
 >....
 >````
-> **Ejemplo de la parametrización**
+>
+> **Ejemplo de la parametrización**:
+> 
 > A continuación se crea un método básico de ejemplo para asignarle el valor a los input parameter 
+> 
 > ````
 > private void Parameterization(List<InputParameter> parameters)
 >{
@@ -364,7 +373,7 @@ Respuesta de la variable **quote**
 
 
 Método para **confirmar**
-
+Para la confirmar se utiliza el método `await _sekure.Confirm(executableProduct, sessionId)` que recibe como parametro el modelo del SDK **ExecutableProduct** y el sessionId del producto seleccionado.
 ````
     public async Task<IActionResult> Confirm(Product productDiscovery, Guid sessionId)
     {
@@ -480,7 +489,7 @@ Respuesta de la variable **confirm**
 ### Emitir
 
 > **Parametros del emitir**
- > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **toEmit** requiere envierle los siguientes input parameter.
+ > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **toEmit** requiere envierle los siguientes input parameter.
 >````
 >....
 >    "toEmit": [
@@ -499,7 +508,8 @@ Respuesta de la variable **confirm**
 >````
 
 Método para **emitir**
-
+ 
+Para la emitir se utiliza el método `await _sekure.Emit(executableProduct, sessionId)` que recibe como parametro el modelo del SDK **ExecutableProduct** y el sessionId del producto seleccionado.
 ````
     public async Task<IActionResult> ToEmit(Product productDiscovery, Guid sessionId)
     {
