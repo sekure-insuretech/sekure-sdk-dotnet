@@ -46,7 +46,10 @@ En el archivo .cs que vayas a consumir los servicios del SDK debes de crear el c
     }
 ````
 ### Descubrimiento del producto
-El descubrimiento es la configuración del producto y se identifica cuales son los input parameter que se requiere para cotizar, confirmar y emitir
+
+El descubrimiento es la configuración del producto, se utiliza el método `await _sekure.GetProductById(productId)` que recibe como parametro el productId
+
+Con el descubrimiento se identifica cuales son los input parameter que se requiere para cotizar, confirmar y emitir
 ````
     public async Task<IActionResult> Discovery(int productId)
     {
@@ -281,7 +284,7 @@ Respuesta de la variable **quote**
 >
 > **Parametros de confirmar**
 > 
-> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) y observamos que para **confirm** requiere envierle los siguientes input parameter.
+> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **confirm** requiere envierle los siguientes input parameter.
 > 
 >````
 >....
@@ -373,6 +376,7 @@ Respuesta de la variable **quote**
 
 
 Método para **confirmar**
+
 Para la confirmar se utiliza el método `await _sekure.Confirm(executableProduct, sessionId)` que recibe como parametro el modelo del SDK **ExecutableProduct** y el sessionId del producto seleccionado.
 ````
     public async Task<IActionResult> Confirm(Product productDiscovery, Guid sessionId)
@@ -489,7 +493,9 @@ Respuesta de la variable **confirm**
 ### Emitir
 
 > **Parametros del emitir**
- > En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **toEmit** requiere envierle los siguientes input parameter.
+ 
+> En este ejemplo la respuesta de la variable productDiscovery del método Discovery (estructura .json) observamos que para **toEmit** requiere envierle los siguientes input parameter.
+ 
 >````
 >....
 >    "toEmit": [
