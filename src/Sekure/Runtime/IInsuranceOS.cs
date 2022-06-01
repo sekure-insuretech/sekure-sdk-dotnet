@@ -34,6 +34,15 @@ namespace Sekure.Runtime
         Task<QuotedProduct> Quote(ExecutableProduct executableProduct);
 
         /// <summary>
+        /// This method is responsible for making the batch price of the products according to the parameters entered. 
+        /// and delivers a list of session Id with which the selected quote is registered as well as the available quotes of the product
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="executatbleProductLot">This is the object needed to execute the batch actions (quote, confirm, issue)
+        /// It has essential information about the product and the necessary parameters.</param>
+        Task<QuotedProductLot> Quote(ExecutatbleProductLot executatbleProductLot);
+
+        /// <summary>
         /// Confirms the purchase of the product and allows to deliver a policy to the policy holder who was registered in the quote.
         /// This method will return a list of all the products available in sekure. 
         /// Send a PostAsync request to InsuranceOS API./>.
@@ -44,6 +53,16 @@ namespace Sekure.Runtime
         Task<Policy> Confirm(ExecutableProduct executableProduct, Guid sessionId);
 
         /// <summary>
+        /// Confirms the quote of the selected product and allows to deliver a policy to the policyholder who registered in the quote.
+        /// This method will return the product confirmation
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="executableProduct">This is the object necessary to execute the actions (quote, confirm, emit) in the product purchase process. 
+        /// It has essential information about the product, policyholder, and necessary parameters.</param>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<Policy> Confirm(ExecutatbleProductLot executableProduct, Guid sessionId);
+
+        /// <summary>
         /// Generate the insurance policy in case the product is not paid with the sekure payment gateway, or on the contrary, 
         /// allow the policy to pass to a state of pending payment. In the quote response there is a boolean property which indicates if the product is paid through the sekure payment gateways or not.
         /// Send a PostAsync request to InsuranceOS API./>.
@@ -52,6 +71,15 @@ namespace Sekure.Runtime
         /// It has essential information about the product, policyholder, and necessary parameters.</param>
         /// <param name="sessionId">This is the session id with which the quote was registered.</param>
         Task<string> Emit(ExecutableProduct executableProduct, Guid sessionId);
+
+        /// <summary>
+        /// Generates the emission of the selected product of the Lot
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="executableProduct">This is the object necessary to execute the actions (quote, confirm, emit) in the product purchase process. 
+        /// It has essential information about the product, policyholder, and necessary parameters.</param>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<string> Emit(ExecutatbleProductLot executableProduct, Guid sessionId);
 
         /// <summary>
         /// Allows to know in what state of the process the policy is
