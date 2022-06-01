@@ -82,11 +82,25 @@ namespace Sekure.Runtime
         Task<string> Emit(ExecutatbleProductLot executableProduct, Guid sessionId);
 
         /// <summary>
+        /// performs the cancellation of the policy purchase flow.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<string> Cancel(Guid sessionId);
+
+        /// <summary>
         /// Allows to know in what state of the process the policy is
         /// Send a GetAsync request to InsuranceOS API./>.
         /// </summary>
         /// <param name="sessionId">This is the session id with which the quote was registered.</param>
         Task<ProductStage> GetProductStage(Guid sessionId);
+
+        /// <summary>
+        /// Return the estimate associated with the session ID 
+        /// Send a GetAsync request to the Insurance API
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<Estimate> GetEstimateBySessionId(Guid sessionId);
 
         /// <summary>
         /// Allows to obtain the configuration that we must use for the payment gateway that is going to be used

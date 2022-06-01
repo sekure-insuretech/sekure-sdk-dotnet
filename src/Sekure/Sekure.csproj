@@ -17,9 +17,15 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Estimate\" />
+    <Folder Include="Models\Audit\" />
+    <Folder Include="Models\Tenant\" />
+    <Folder Include="Models\TenantContact\" />
+    <Folder Include="Models\Session\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 

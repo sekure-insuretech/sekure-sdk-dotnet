@@ -110,6 +110,20 @@ namespace Sekure.Runtime
             return stage;
         }
 
+        public async Task<string> Cancel(Guid sessionId)
+        {
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{apiUrl}/Products/Cancel/{sessionId}");
+            HttpResponseMessage response = await GetClient().SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            return result;
+        }
+
         public async Task<ProductStage> GetProductStage(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Stage/{sessionId}");
@@ -177,6 +191,24 @@ namespace Sekure.Runtime
 
             return stage;
         }
+        #endregion
+
+        #region Estimate
+        public async Task<Estimate> GetEstimateBySessionId(Guid sessionId)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Estimates/Session/{sessionId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string estimateBySessionIdJson = await response.Content.ReadAsStringAsync();
+            Estimate estimate = JsonConvert.DeserializeObject<Estimate>(estimateBySessionIdJson);
+
+            return estimate;
+        }
+
         #endregion
 
         #region Payment
