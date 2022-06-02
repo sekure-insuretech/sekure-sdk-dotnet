@@ -25,6 +25,14 @@ namespace Sekure.Runtime
         Task<Product> GetProductById(int id);
 
         /// <summary>
+        /// Returns a discovery of batches of products, which will obtain information about
+        /// how to configure the batch at each stage of the quote, confirmation and issuance process
+        /// Send a GetAsync request to InsuranceOS API.
+        /// </summary>
+        /// <param name="name">This is the batch ID.</param>
+        Task<BatchDiscovery> GetProductLotByName(string name);
+
+        /// <summary>
         /// This method is responsible for making the product quote according to the entered parameters 
         /// and delivers a sessionId with which the quote made is recorded as well as returns the available quotes of the product
         /// Send a PostAsync request to InsuranceOS API./>.

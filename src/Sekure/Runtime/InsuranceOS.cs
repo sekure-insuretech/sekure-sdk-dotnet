@@ -1,10 +1,10 @@
-﻿using Sekure.Models;
+﻿using Newtonsoft.Json;
+using Sekure.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Sekure.Runtime
 {
@@ -142,6 +142,21 @@ namespace Sekure.Runtime
         #endregion
 
         #region ProductLot
+        public async Task<BatchDiscovery> GetProductLotByName(string name)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Batch/{name}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string productResponseJson = await response.Content.ReadAsStringAsync();
+            BatchDiscovery lot = JsonConvert.DeserializeObject<BatchDiscovery>(productResponseJson);
+
+            return lot;
+        }
+
         public async Task<QuotedProductLot> Quote(ExecutatbleProductLot executatbleProductLot)
         {
             string jsonProduct = JsonConvert.SerializeObject(executatbleProductLot);
