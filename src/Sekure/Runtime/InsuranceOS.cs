@@ -141,6 +141,58 @@ namespace Sekure.Runtime
 
         #endregion
 
+        #region ProductLot
+        public async Task<QuotedProductLot> Quote(ExecutatbleProductLot executatbleProductLot)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executatbleProductLot);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Batch/Quote", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string quotedProductJson = await response.Content.ReadAsStringAsync();
+            QuotedProductLot quotedProduct = JsonConvert.DeserializeObject<QuotedProductLot>(quotedProductJson);
+
+            return quotedProduct;
+        }
+
+        public async Task<Policy> Confirm(ExecutatbleProductLot executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Batch/Confirm/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string confirmedProductJson = await response.Content.ReadAsStringAsync();
+            Policy policy = JsonConvert.DeserializeObject<Policy>(confirmedProductJson);
+
+            return policy;
+        }
+
+        public async Task<string> Emit(ExecutatbleProductLot executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Batch/Emit/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string stage = await response.Content.ReadAsStringAsync();
+
+            return stage;
+        }
+        #endregion
+
         #region Estimate
         public async Task<Estimate> GetEstimateBySessionId(Guid sessionId)
         {

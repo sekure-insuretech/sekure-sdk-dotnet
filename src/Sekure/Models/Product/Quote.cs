@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sekure.Models
 {
     public class Quote
     {
+        public Guid SessionId { get; set; }
         public string PlanId { get; set; }
         public string PlanNumber { get; set; }
         public string PlanName { get; set; }
