@@ -1,10 +1,10 @@
-﻿using Sekure.Models;
+﻿using Newtonsoft.Json;
+using Sekure.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Sekure.Runtime
 {
@@ -40,7 +40,11 @@ namespace Sekure.Runtime
 
             string productsJson = await response.Content.ReadAsStringAsync();
 
-            List<ProductReference> products = JsonConvert.DeserializeObject<List<ProductReference>>(productsJson);
+            List<ProductReference> products = JsonConvert.DeserializeObject<List<ProductReference>>(productsJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return products;
         }
@@ -55,7 +59,12 @@ namespace Sekure.Runtime
             }
 
             string productResponseJson = await response.Content.ReadAsStringAsync();
-            Product product = JsonConvert.DeserializeObject<Product>(productResponseJson);
+
+            Product product = JsonConvert.DeserializeObject<Product>(productResponseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return product;
         }
@@ -72,7 +81,11 @@ namespace Sekure.Runtime
             }
 
             string quotedProductJson = await response.Content.ReadAsStringAsync();
-            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(quotedProductJson);
+            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(quotedProductJson, new JsonSerializerSettings 
+            { 
+                NullValueHandling = NullValueHandling.Ignore, 
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return quotedProduct;
         }
@@ -89,7 +102,11 @@ namespace Sekure.Runtime
             }
 
             string confirmedProductJson = await response.Content.ReadAsStringAsync();
-            Policy policy = JsonConvert.DeserializeObject<Policy>(confirmedProductJson);
+            Policy policy = JsonConvert.DeserializeObject<Policy>(confirmedProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return policy;
         }
@@ -134,7 +151,11 @@ namespace Sekure.Runtime
             }
 
             string productStageJson = await response.Content.ReadAsStringAsync();
-            ProductStage productStage = JsonConvert.DeserializeObject<ProductStage>(productStageJson);
+            ProductStage productStage = JsonConvert.DeserializeObject<ProductStage>(productStageJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return productStage;
         }
@@ -142,6 +163,25 @@ namespace Sekure.Runtime
         #endregion
 
         #region ProductLot
+        public async Task<BatchDiscovery> GetProductLotByName(string name)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Batch/{name}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string productResponseJson = await response.Content.ReadAsStringAsync();
+            BatchDiscovery lot = JsonConvert.DeserializeObject<BatchDiscovery>(productResponseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return lot;
+        }
+
         public async Task<QuotedProductLot> Quote(ExecutatbleProductLot executatbleProductLot)
         {
             string jsonProduct = JsonConvert.SerializeObject(executatbleProductLot);
@@ -154,7 +194,11 @@ namespace Sekure.Runtime
             }
 
             string quotedProductJson = await response.Content.ReadAsStringAsync();
-            QuotedProductLot quotedProduct = JsonConvert.DeserializeObject<QuotedProductLot>(quotedProductJson);
+            QuotedProductLot quotedProduct = JsonConvert.DeserializeObject<QuotedProductLot>(quotedProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return quotedProduct;
         }
@@ -171,7 +215,11 @@ namespace Sekure.Runtime
             }
 
             string confirmedProductJson = await response.Content.ReadAsStringAsync();
-            Policy policy = JsonConvert.DeserializeObject<Policy>(confirmedProductJson);
+            Policy policy = JsonConvert.DeserializeObject<Policy>(confirmedProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return policy;
         }
@@ -204,7 +252,11 @@ namespace Sekure.Runtime
             }
 
             string estimateBySessionIdJson = await response.Content.ReadAsStringAsync();
-            Estimate estimate = JsonConvert.DeserializeObject<Estimate>(estimateBySessionIdJson);
+            Estimate estimate = JsonConvert.DeserializeObject<Estimate>(estimateBySessionIdJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return estimate;
         }
@@ -241,7 +293,11 @@ namespace Sekure.Runtime
             }
 
             string statusJson = await response.Content.ReadAsStringAsync();
-            PaymentStatus paymentStatus = JsonConvert.DeserializeObject<PaymentStatus>(statusJson);
+            PaymentStatus paymentStatus = JsonConvert.DeserializeObject<PaymentStatus>(statusJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return paymentStatus;
         }
@@ -256,7 +312,11 @@ namespace Sekure.Runtime
             }
 
             string pyamentGatewayProductJson = await response.Content.ReadAsStringAsync();
-            PaymentGatewayProduct paymentGatewayProduct = JsonConvert.DeserializeObject<PaymentGatewayProduct>(pyamentGatewayProductJson);
+            PaymentGatewayProduct paymentGatewayProduct = JsonConvert.DeserializeObject<PaymentGatewayProduct>(pyamentGatewayProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             return paymentGatewayProduct;
         }
