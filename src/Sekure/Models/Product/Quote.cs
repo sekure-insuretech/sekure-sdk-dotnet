@@ -21,6 +21,7 @@ namespace Sekure.Models
         public List<InfoResultAPI> GracePeriodsList { get; set; }
         public List<InputParameter> AdditionalInfo { get; set; }
         public List<AdditionalInsured> AdditionalInsured { get; set; }
+        public List<AdditionalInfo> QuoteInfo { get; set; }
 
         public Quote() { }
 
