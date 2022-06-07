@@ -25,7 +25,10 @@ namespace Sekure.Models
 
         public Quote() { }
 
-        public Quote(string planId, string planNumber, string planName, string insuredValue, string policyNumber, List<CoverageResultAPI> coverages, List<InfoResultAPI> deductible, string startDate, string termTime, string premiumAmount, string premiumPaymentInterval, List<InfoResultAPI> beneficiaries, List<InfoResultAPI> gracePeriodsList, List<InputParameter> additionalInfo, List<AdditionalInsured> additionalInsured)
+        public Quote(string planId, string planNumber, string planName, string insuredValue, string policyNumber, List<CoverageResultAPI> coverages, 
+            List<InfoResultAPI> deductible, string startDate, string termTime, string premiumAmount, string premiumPaymentInterval, 
+            List<InfoResultAPI> beneficiaries, List<InfoResultAPI> gracePeriodsList, List<InputParameter> additionalInfo, List<AdditionalInsured> additionalInsured, 
+            List<AdditionalInfo> quoteInfo)
         {
             PlanId = planId;
             PlanNumber = planNumber;
@@ -42,6 +45,7 @@ namespace Sekure.Models
             GracePeriodsList = gracePeriodsList;
             AdditionalInfo = additionalInfo;
             AdditionalInsured = additionalInsured;
+            QuoteInfo = quoteInfo;
         }
     }
 
