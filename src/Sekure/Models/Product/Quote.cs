@@ -15,6 +15,7 @@ namespace Sekure.Models
         public List<InfoResultAPI> Deductible { get; set; }
         public string StartDate { get; set; }
         public string TermTime { get; set; }
+        public string ExpeditionDate { get; set; }
         public string PremiumAmount { get; set; }
         public string PremiumPaymentInterval { get; set; }
         public List<InfoResultAPI> Beneficiaries { get; set; }
@@ -24,7 +25,6 @@ namespace Sekure.Models
         public List<AdditionalInfo> QuoteInfo { get; set; }
 
         public Quote() { }
-
         public Quote(string planId, string planNumber, string planName, string insuredValue, string policyNumber, List<CoverageResultAPI> coverages, 
             List<InfoResultAPI> deductible, string startDate, string termTime, string premiumAmount, string premiumPaymentInterval, 
             List<InfoResultAPI> beneficiaries, List<InfoResultAPI> gracePeriodsList, List<InputParameter> additionalInfo, List<AdditionalInsured> additionalInsured, 
@@ -39,6 +39,7 @@ namespace Sekure.Models
             Deductible = deductible;
             StartDate = startDate;
             TermTime = termTime;
+            ExpeditionDate = expeditionDate;
             PremiumAmount = premiumAmount;
             PremiumPaymentInterval = premiumPaymentInterval;
             Beneficiaries = beneficiaries;
