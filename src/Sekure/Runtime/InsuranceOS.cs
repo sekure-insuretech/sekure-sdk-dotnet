@@ -261,6 +261,28 @@ namespace Sekure.Runtime
             return estimate;
         }
 
+        public async Task<QuotedProduct> GetQuoteBySessionId(Guid sessionId)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Quote/Session/{sessionId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string estimateBySessionIdJson = await response.Content.ReadAsStringAsync();
+            Estimate estimate = JsonConvert.DeserializeObject<Estimate>(estimateBySessionIdJson);
+
+            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(estimate.Response, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+            quotedProduct.Quotes.ForEach(x => x.AdditionalInfo = null);
+
+            return quotedProduct;
+        }
+
         #endregion
 
         #region Payment
