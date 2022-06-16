@@ -67,7 +67,9 @@ La variable productDiscovery que es tipo **Product** recibe un estructura simila
         "productId": "{productId}",
         "productName": "{productName}",
         "policyTypeName": "{policyTypeName}",
-        "insuranceCompanyName": "{insuranceCompanyName}"
+        "insuranceCompanyName": "{insuranceCompanyName}",
+        "ProductCover": "{ProductCover}",
+        "DevoleperGuide": "{DevoleperGuide}"
     },
     "policyHolder": [
         {
