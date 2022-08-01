@@ -69,6 +69,26 @@ namespace Sekure.Runtime
             return product;
         }
 
+        public async Task<Product> ProductByIdNoPolicyHolder(int id)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/v1/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string productResponseJson = await response.Content.ReadAsStringAsync();
+
+            Product product = JsonConvert.DeserializeObject<Product>(productResponseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return product;
+        }
+
         public async Task<QuotedProduct> Quote(ExecutableProduct executableProduct)
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);

@@ -25,6 +25,14 @@ namespace Sekure.Runtime
         Task<Product> GetProductById(int id);
 
         /// <summary>
+        /// Returns a discovery of the product, with which information will be obtained about 
+        /// how to configure the product at each stage of the process of quotation and obtaining the product.
+        /// Send a GetAsync request to InsuranceOS API.
+        /// </summary>
+        /// <param name="id">This is the product id.</param>
+        Task<Product> ProductByIdNoPolicyHolder(int id);
+
+        /// <summary>
         /// Returns a discovery of batches of products, which will obtain information about
         /// how to configure the batch at each stage of the quote, confirmation and issuance process
         /// Send a GetAsync request to InsuranceOS API.
