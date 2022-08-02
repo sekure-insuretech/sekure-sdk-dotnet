@@ -89,13 +89,23 @@ namespace Sekure.Runtime
         Task<string> Emit(ExecutableProduct executableProduct, Guid sessionId);
 
         /// <summary>
+        /// Generate the insurance policy in case the product is not paid with the sekure payment gateway, or on the contrary, 
+        /// allow the policy to pass to a state of pending payment. In the quote response there is a boolean property which indicates if the product is paid through the sekure payment gateways or not.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="executableProduct">This is the object necessary to execute the actions (quote, confirm, emit) in the product purchase process. 
+        /// It has essential information about the product, policyholder, and necessary parameters.</param>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        Task<Policy> EmitWithPolicy(ExecutableProduct executableProduct, Guid sessionId);
+
+        /// <summary>
         /// Generates the emission of the selected product of the Lot
         /// Send a PostAsync request to InsuranceOS API./>.
         /// </summary>
         /// <param name="executableProduct">This is the object necessary to execute the actions (quote, confirm, emit) in the product purchase process. 
         /// It has essential information about the product, policyholder, and necessary parameters.</param>
         /// <param name="sessionId">This is the session id with which the quote was registered.</param>
-        Task<string> Emit(ExecutatbleProductLot executableProduct, Guid sessionId);
+        Task<Policy> EmitWithPolicy(ExecutatbleProductLot executableProduct, Guid sessionId);
 
         /// <summary>
         /// performs the cancellation of the policy purchase flow.

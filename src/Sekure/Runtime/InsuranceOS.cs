@@ -147,6 +147,27 @@ namespace Sekure.Runtime
             return stage;
         }
 
+        public async Task<Policy> EmitWithPolicy(ExecutableProduct executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Emit/v1/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+            Policy policy = JsonConvert.DeserializeObject<Policy>(result, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return policy;
+        }
+
         public async Task<string> Cancel(Guid sessionId)
         {
             var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{apiUrl}/Products/Cancel/{sessionId}");
@@ -244,7 +265,7 @@ namespace Sekure.Runtime
             return policy;
         }
 
-        public async Task<string> Emit(ExecutatbleProductLot executableProduct, Guid sessionId)
+        public async Task<Policy> EmitWithPolicy(ExecutatbleProductLot executableProduct, Guid sessionId)
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);
 
@@ -255,9 +276,14 @@ namespace Sekure.Runtime
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
 
-            string stage = await response.Content.ReadAsStringAsync();
+            string result = await response.Content.ReadAsStringAsync();
+            Policy policy = JsonConvert.DeserializeObject<Policy>(result, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
-            return stage;
+            return policy;
         }
         #endregion
 
