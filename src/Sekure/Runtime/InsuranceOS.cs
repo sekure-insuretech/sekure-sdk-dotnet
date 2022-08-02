@@ -49,6 +49,7 @@ namespace Sekure.Runtime
             return products;
         }
 
+        [Obsolete("This property is obsolete. Use ProductByIdNoPolicyHolder instead.", false)]
         public async Task<Product> GetProductById(int id)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/{id}");
@@ -77,7 +78,6 @@ namespace Sekure.Runtime
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
-
             string productResponseJson = await response.Content.ReadAsStringAsync();
 
             Product product = JsonConvert.DeserializeObject<Product>(productResponseJson, new JsonSerializerSettings
