@@ -72,7 +72,7 @@ namespace Sekure.Runtime
 
         public async Task<Product> ProductByIdNoPolicyHolder(int id)
         {
-            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/v1/{id}");
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/v1/Products/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -151,7 +151,7 @@ namespace Sekure.Runtime
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);
 
-            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/Emit/v1/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/v1/Products/Emit/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
             {
