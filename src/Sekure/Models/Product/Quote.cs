@@ -39,7 +39,6 @@ namespace Sekure.Models
             Deductible = deductible;
             StartDate = startDate;
             TermTime = termTime;
-            ExpeditionDate = expeditionDate;
             PremiumAmount = premiumAmount;
             PremiumPaymentInterval = premiumPaymentInterval;
             Beneficiaries = beneficiaries;
