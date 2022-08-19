@@ -34,6 +34,43 @@ namespace Sekure.Models
         public List<AdditionalInsured> AdditionalInsured { get; set; }
         public EndOfValidityPremium EndOfValidityPremium { get; set; }
         public List<AdditionalInfo> QuoteInfo { get; set; }
+
+        public Quote()
+        {
+
+        }
+
+        public Quote(Guid sessionId, string idPlan, string planNumber, string planName, string quotationValueMonthly, string quotationValueAnnual, string productName, string insuranceCompanyName, string coverageStartDate, string coverageEndDate, string expeditionDate, string quoteMessage, string amountInsured, string quotationTotal, string policyNumber, string emailSubject, string emailBody, string emailPolicy, string attachName, List<CoverageResultApi> coverageResultList, List<CoverageResultApi> aggregatesResultList, List<InfoResultApi> insuredResultList, List<InfoResultApi> gracePeriodsList, List<InfoResultApi> deductibleList, List<InputParameter> otherInformationOS, List<AdditionalInsured> additionalInsured, EndOfValidityPremium endOfValidityPremium, List<AdditionalInfo> quoteInfo)
+        {
+            SessionId = sessionId;
+            IdPlan = idPlan;
+            PlanNumber = planNumber;
+            PlanName = planName;
+            QuotationValueMonthly = quotationValueMonthly;
+            QuotationValueAnnual = quotationValueAnnual;
+            ProductName = productName;
+            InsuranceCompanyName = insuranceCompanyName;
+            CoverageStartDate = coverageStartDate;
+            CoverageEndDate = coverageEndDate;
+            ExpeditionDate = expeditionDate;
+            QuoteMessage = quoteMessage;
+            AmountInsured = amountInsured;
+            QuotationTotal = quotationTotal;
+            PolicyNumber = policyNumber;
+            EmailSubject = emailSubject;
+            EmailBody = emailBody;
+            EmailPolicy = emailPolicy;
+            AttachName = attachName;
+            CoverageResultList = coverageResultList;
+            AggregatesResultList = aggregatesResultList;
+            InsuredResultList = insuredResultList;
+            GracePeriodsList = gracePeriodsList;
+            DeductibleList = deductibleList;
+            OtherInformationOS = otherInformationOS;
+            AdditionalInsured = additionalInsured;
+            EndOfValidityPremium = endOfValidityPremium;
+            QuoteInfo = quoteInfo;
+        }
     }
 
     public class CoverageResultApi
