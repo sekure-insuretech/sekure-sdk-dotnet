@@ -131,6 +131,7 @@ namespace Sekure.Runtime
             return policy;
         }
 
+        [Obsolete("This property is obsolete. Use EmitWithPolicy instead.", false)]
         public async Task<string> Emit(ExecutableProduct executableProduct, Guid sessionId)
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);
@@ -324,7 +325,6 @@ namespace Sekure.Runtime
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore
             });
-            quotedProduct.Quotes.ForEach(x => x.AdditionalInfo = null);
 
             return quotedProduct;
         }
