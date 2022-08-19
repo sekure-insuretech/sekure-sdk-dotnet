@@ -7,11 +7,11 @@ namespace Sekure.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Value { get; set; }
-        public List<CoverageResultAPI> Coverages { get; set; }
+        public List<CoverageResultApi> Coverages { get; set; }
 
         public AdditionalInsured() { }
 
-        public AdditionalInsured(string name, string description, string value, List<CoverageResultAPI> coverages)
+        public AdditionalInsured(string name, string description, string value, List<CoverageResultApi> coverages)
         {
             Name = name;
             Description = description;
