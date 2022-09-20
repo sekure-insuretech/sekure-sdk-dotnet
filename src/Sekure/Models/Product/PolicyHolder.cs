@@ -28,6 +28,22 @@ namespace Sekure.Models
         public string CompanyStreetNumber { get; set; }
         public string CompanyAddress { get; set; }
 
+        public PolicyHolder(string firstName, string secondName, string lastName, string secondLastName, string gender, string address, string identificationType, string identificationNumber, DateTime? birthdate, string maritalStatus, string email, string phoneNumber)
+        {
+            FirstName = firstName;
+            SecondName = secondName;
+            LastName = lastName;
+            SecondLastName = secondLastName;
+            Gender = gender;
+            Address = address;
+            IdentificationType = identificationType;
+            IdentificationNumber = identificationNumber;
+            Birthdate = birthdate;
+            MaritalStatus = maritalStatus;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
+
         public PolicyHolder(string firstName, string secondName, string lastName, string secondLastName, string gender, string address, string identificationType, string identificationNumber, DateTime? birthdate, DateTime? expeditionDate, string maritalStatus, string email, string phoneNumber, string cityCode, string city, string companyName, string companyIdentificationNumber, string companyEmail, string companyPhone, DateTime? companyDate, string companyPostalCode, string companyStreetNumber, string companyAddress)
         {
             FirstName = firstName;
