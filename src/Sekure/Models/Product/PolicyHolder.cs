@@ -18,6 +18,7 @@ namespace Sekure.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string CityCode { get; set; }
+        public string City { get; set; }
         public string CompanyName { get; set; }
         public string CompanyIdentificationNumber { get; set; }
         public string CompanyEmail { get; set; }
@@ -27,7 +28,7 @@ namespace Sekure.Models
         public string CompanyStreetNumber { get; set; }
         public string CompanyAddress { get; set; }
 
-        public PolicyHolder(string firstName, string secondName, string lastName, string secondLastName, string gender, string address, string identificationType, string identificationNumber, DateTime? birthdate, DateTime? expeditionDate, string maritalStatus, string email, string phoneNumber, string cityCode, string companyName, string companyIdentificationNumber, string companyEmail, string companyPhone, DateTime? companyDate, string companyPostalCode, string companyStreetNumber, string companyAddress)
+        public PolicyHolder(string firstName, string secondName, string lastName, string secondLastName, string gender, string address, string identificationType, string identificationNumber, DateTime? birthdate, DateTime? expeditionDate, string maritalStatus, string email, string phoneNumber, string cityCode, string city, string companyName, string companyIdentificationNumber, string companyEmail, string companyPhone, DateTime? companyDate, string companyPostalCode, string companyStreetNumber, string companyAddress)
         {
             FirstName = firstName;
             SecondName = secondName;
@@ -43,6 +44,7 @@ namespace Sekure.Models
             Email = email;
             PhoneNumber = phoneNumber;
             CityCode = cityCode;
+            City = city;
             CompanyName = companyName;
             CompanyIdentificationNumber = companyIdentificationNumber;
             CompanyEmail = companyEmail;
