@@ -12,6 +12,7 @@ namespace Sekure.Models
         public virtual List<Estimate> Estimates { get; set; }
         public virtual List<Product> Products { get; set; }
         public virtual List<Payment> Payments { get; set; }
+        public Session() { }
 
         public Session(DateTime creationDate, int tenantContactId)
         {
