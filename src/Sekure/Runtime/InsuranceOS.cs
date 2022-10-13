@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using Sekure.Models;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Sekure.Models;
+using System.Text;
+using System;
 
 namespace Sekure.Runtime
 {
@@ -12,18 +12,21 @@ namespace Sekure.Runtime
     {
         private string apiUrl = string.Empty;
         private string apiKey = string.Empty;
+        private string clientIpAddress = string.Empty;
         private HttpClient _client;
 
-        public InsuranceOS(string apiUrl, string apiKey, HttpClient client)
+        public InsuranceOS(string apiUrl, string apiKey, string clientIpAddress, HttpClient client)
         {
             this.apiUrl = apiUrl;
             this.apiKey = apiKey;
+            this.clientIpAddress = clientIpAddress;
             _client = client;
         }
 
         private HttpClient GetClient()
         {
             _client.DefaultRequestHeaders.Add("skr-key", apiKey);
+            _client.DefaultRequestHeaders.Add("client-ip-address", clientIpAddress);
             return _client;
         }
 
