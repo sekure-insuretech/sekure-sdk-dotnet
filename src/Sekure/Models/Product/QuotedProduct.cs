@@ -10,14 +10,16 @@ namespace Sekure.Models
         public ProductDetail ProductDetail { get; set; }
         public PolicyHolder PolicyHolder { get; set; }
         public List<Quote> Quotes { get; set; }
-        public bool PaymentGatewaySkr { get; set; }
-        public QuotedProduct(string marketingTracking, ProductDetail productDetail, PolicyHolder policyHolder, List<Quote> quotes, bool paymentGatewaySkr)
+        public QuotedProduct()
+        {
+
+        }
+        public QuotedProduct(ProductDetail productDetail, PolicyHolder policyHolder, List<Quote> quotes, string marketingTracking)
         {
             MarketingTracking = marketingTracking;
             ProductDetail = productDetail;
             PolicyHolder = policyHolder;
             Quotes = quotes;
-            PaymentGatewaySkr = paymentGatewaySkr;
         }
     }
 }
