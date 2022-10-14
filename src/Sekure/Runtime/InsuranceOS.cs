@@ -359,6 +359,55 @@ namespace Sekure.Runtime
             return responsePayment;
         }
 
+        public async Task<string> SessionToken(PaymentDetail paymentDetail)
+        {
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/SessionToken", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync();
+
+            return responsePayment;
+        }
+
+        public async Task<string> ReverseCapture(PaymentDetail paymentDetail)
+        {
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ReverseCapture", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync();
+
+            return responsePayment;
+        }
+
+        public async Task<PaymentStatus> GetTokenizationStatus(PaymentDetail paymentDetail)
+        {
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Payment/TokenizationStatus", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string statusJson = await response.Content.ReadAsStringAsync();
+            PaymentStatus paymentStatus = JsonConvert.DeserializeObject<PaymentStatus>(statusJson);
+
+            return paymentStatus;
+        }
+
         public async Task<PaymentStatus> GetPaymentStatus(PaymentDetail paymentDetail)
         {
             string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);

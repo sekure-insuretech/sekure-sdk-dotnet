@@ -144,12 +144,36 @@ namespace Sekure.Runtime
         Task<string> Pay(PaymentDetail paymentDetail);
 
         /// <summary>
+        /// Generate a session token or information necessary for the payment to be made.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        /// The object type property allows to be configured to any object that is necessary to start a session in any of the gateways that sekure has.</param>
+        Task<string> SessionToken(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Reverse a payment.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        /// The object type property allows to be configured to any object that is necessary to start a session in any of the gateways that sekure has.</param>
+        Task<string> ReverseCapture(PaymentDetail paymentDetail);
+
+        /// <summary>
         /// Returns information about the status of the payment of the policy.
         /// Send a PostAsync request to InsuranceOS API./>.
         /// </summary>
         /// /// <param name="paymentDetail">Important payment detail. 
         /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
         Task<PaymentStatus> GetPaymentStatus(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Returns information about the tokenization status.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
+        Task<PaymentStatus> GetTokenizationStatus(PaymentDetail paymentDetail);
 
         /// <summary>
         /// Returns information about the any additional information of a product.

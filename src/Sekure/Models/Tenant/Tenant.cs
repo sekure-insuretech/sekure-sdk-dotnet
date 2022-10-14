@@ -9,6 +9,7 @@ namespace Sekure.Models
         public string Name { get; set; }
         public string Details { get; set; }
         public virtual List<TenantContact> TenantContats { get; set; }
+        public Tenant() { }
 
         public Tenant(Guid id, string name, string details)
         {
