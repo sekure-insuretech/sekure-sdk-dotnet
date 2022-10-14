@@ -15,6 +15,13 @@ namespace Sekure.Runtime
         private string clientIpAddress = string.Empty;
         private HttpClient _client;
 
+        public InsuranceOS(string apiUrl, string apiKey, HttpClient client)
+        {
+            this.apiUrl = apiUrl;
+            this.apiKey = apiKey;
+            _client = client;
+        }
+        
         public InsuranceOS(string apiUrl, string apiKey, string clientIpAddress, HttpClient client)
         {
             this.apiUrl = apiUrl;
