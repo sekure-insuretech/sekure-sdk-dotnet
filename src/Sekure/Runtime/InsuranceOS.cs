@@ -474,7 +474,7 @@ namespace Sekure.Runtime
         public async Task<ExecutableRiskValidator> RikValidator(RequestExecutable requestExecutable, Guid sessionId)
         {
             string jsonRequestExecutable = JsonConvert.SerializeObject(requestExecutable);
-            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/risk/{sessionId}", new StringContent(jsonRequestExecutable, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/risk/getconfiguration/{sessionId}", new StringContent(jsonRequestExecutable, Encoding.UTF8, "application/json"));
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
@@ -490,7 +490,7 @@ namespace Sekure.Runtime
 
         public async Task<ResponseConfiguration> GetValidatorConfiguration(Guid sessionId)
         {
-            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/risk/{sessionId}");
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/risk/validator/{sessionId}");
 
             if (!response.IsSuccessStatusCode)
             {
