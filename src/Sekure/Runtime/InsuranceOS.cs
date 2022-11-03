@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Sekure.Models;
 using System.Text;
 using System;
+using Sekure.Models.RiskValidator;
 
 namespace Sekure.Runtime
 {
@@ -466,6 +467,47 @@ namespace Sekure.Runtime
 
             return responsePayment;
         }
+        #endregion
+
+        #region RiskValidation
+
+        public async Task<ExecutableRiskValidator> RikValidator(RequestExecutable requestExecutable, Guid sessionId)
+        {
+            string jsonRequestExecutable = JsonConvert.SerializeObject(requestExecutable);
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/risk/{sessionId}", new StringContent(jsonRequestExecutable, Encoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+            string responseJson = await response.Content.ReadAsStringAsync();
+            ExecutableRiskValidator executableRiskValidator = JsonConvert.DeserializeObject<ExecutableRiskValidator>(responseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+            return executableRiskValidator;
+        }
+
+        public async Task<ResponseConfiguration> GetValidatorConfiguration(Guid sessionId)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/risk/{sessionId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string configurationJson = await response.Content.ReadAsStringAsync();
+
+            ResponseConfiguration Configuration = JsonConvert.DeserializeObject<ResponseConfiguration>(configurationJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return Configuration;
+        }
+
         #endregion
     }
 }

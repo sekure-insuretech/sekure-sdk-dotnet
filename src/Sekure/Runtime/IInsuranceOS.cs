@@ -1,4 +1,5 @@
 ﻿using Sekure.Models;
+using Sekure.Models.RiskValidator;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -180,5 +181,20 @@ namespace Sekure.Runtime
         /// Send a PostAsync request to InsuranceOS API./>.
         /// </summary>
         Task<string> AskSekure(object parameters, int productId, string productName);
+
+        /// <summary>
+        /// This method is responsible for performing risk validations with tertiary entities before issuing the catalog products. 
+        /// A product can have one or more validators, in case the validator requires information, it dynamically requests it from the end user
+        /// </summary>
+        /// <param name="requestExecutable">This is the object needed to execute the function /// </param>
+        /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
+        Task<ExecutableRiskValidator> RikValidator(RequestExecutable requestExecutable, Guid sessionId);
+
+        /// <summary>
+        /// This method handles the risk validator first pass discovery
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
+        Task<ResponseConfiguration> GetValidatorConfiguration(Guid sessionId);
+
     }
 }
