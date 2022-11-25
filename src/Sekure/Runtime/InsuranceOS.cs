@@ -258,6 +258,22 @@ namespace Sekure.Runtime
             return paymentGatewayProduct;
         }
 
+        public async Task<string> UpdateSessionDetail(PaymentDetail paymentDetail)
+        {
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/UpdateSessionDetail", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responseUpdate = await response.Content.ReadAsStringAsync();
+
+            return responseUpdate;
+        }
+
         #endregion
 
         #region AskSekure
