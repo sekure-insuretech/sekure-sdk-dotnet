@@ -196,5 +196,11 @@ namespace Sekure.Runtime
         /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
         Task<ResponseConfiguration> GetValidatorConfiguration(Guid sessionId);
 
+        /// <summary>
+        /// Confirm a payment.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        Task<string> ConfirmPayment(PaymentDetail paymentDetail);
     }
 }
