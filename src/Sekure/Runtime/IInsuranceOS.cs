@@ -134,5 +134,12 @@ namespace Sekure.Runtime
         /// Send a PostAsync request to InsuranceOS API./>.
         /// </summary>
         Task<string> AskSekure(object parameters, int productId, string productName);
+
+        /// <summary>
+        /// Confirm a payment.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        Task<string> ConfirmPayment(PaymentDetail paymentDetail);
     }
 }

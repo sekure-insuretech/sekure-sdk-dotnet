@@ -274,6 +274,21 @@ namespace Sekure.Runtime
             return responseUpdate;
         }
 
+        public async Task<string> ConfirmPayment(PaymentDetail paymentDetail)
+        {
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ConfirmPayment", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync();
+
+            return responsePayment;
+        }
         #endregion
 
         #region AskSekure
