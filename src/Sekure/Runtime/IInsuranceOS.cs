@@ -202,5 +202,13 @@ namespace Sekure.Runtime
         /// </summary>
         /// /// <param name="paymentDetail">Important payment detail. 
         Task<string> ConfirmPayment(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Returns information about the status of the payment of the policy.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
+        Task<string> UpdateSessionDetail(PaymentDetail paymentDetail);
     }
 }
