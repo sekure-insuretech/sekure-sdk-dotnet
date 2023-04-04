@@ -32,7 +32,7 @@ Es la suscripción que debe de tener el cliente para utilizar el sdk de sekure, 
 
 # Consumir del NuGet
 En el archivo .cs que vayas a consumir los servicios del SDK debes de crear el constructor y realizar la inyeccion de dependencias
-````
+````c#
     [ApiController]
     [Route("[controller]")]
     public class ProductController : ControllerBase
