@@ -213,6 +213,24 @@ namespace Sekure.Runtime
             return productStage;
         }
 
+        public async Task<Policy> GetProductDetailsBySessionId(Guid sessionId)
+        {
+            var response = await GetClient().GetAsync($"{apiUrl}/Product/Details/{sessionId}");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string policyJson = await response.Content.ReadAsStringAsync();
+            Policy policy = JsonConvert.DeserializeObject<Policy>(policyJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return policy;
+        }
+
         #endregion
 
         #region ProductLot
@@ -515,24 +533,6 @@ namespace Sekure.Runtime
             });
 
             return Configuration;
-        }
-
-        public async Task<Policy> GetProductDetailsBySessionId(Guid sessionId)
-        {
-            var response = await GetClient().GetAsync($"{apiUrl}/Product/Details/{sessionId}");
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
-            }
-
-            string policyJson = await response.Content.ReadAsStringAsync();
-            Policy policy = JsonConvert.DeserializeObject<Policy>(policyJson, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore
-            });
-
-            return policy;
         }
 
         #endregion
