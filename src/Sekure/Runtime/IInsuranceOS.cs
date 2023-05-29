@@ -200,7 +200,14 @@ namespace Sekure.Runtime
         /// Confirm a payment.
         /// Send a PostAsync request to InsuranceOS API./>.
         /// </summary>
-        /// /// <param name="paymentDetail">Important payment detail. 
+        /// <param name="paymentDetail">Important payment detail. 
         Task<string> ConfirmPayment(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Obtains all the information of the policy
+        /// Send a GetAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
+        Task<Policy> GetProductDetailsBySessionId(Guid sessionId);
     }
 }
