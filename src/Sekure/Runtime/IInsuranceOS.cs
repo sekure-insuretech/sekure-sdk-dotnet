@@ -212,6 +212,14 @@ namespace Sekure.Runtime
         Task<string> UpdateSessionDetail(PaymentDetail paymentDetail);
 
         /// <summary>
+        /// Return relevant information on the policy through the electronic number
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// /// <param name="paymentDetail">Important payment detail. 
+        /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
+        Task<string> SessionByNroElctronico(PaymentDetail paymentDetail);
+
+        /// <summary>
         /// Obtains all the information of the policy
         /// Send a GetAsync request to InsuranceOS API./>.
         /// </summary>
