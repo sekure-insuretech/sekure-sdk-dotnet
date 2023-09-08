@@ -37,6 +37,7 @@ namespace Sekure.Models
         public string InputParameterRequired { get; set; }
         public bool ShowApi { get; set; }
         public List<ParameterSchema> InputParameterSchemaList { get; set; }
+        public List<InputParameter> InputParameterArrayObjectList { get; set; }
 
         public InputParameter() { }
     }
