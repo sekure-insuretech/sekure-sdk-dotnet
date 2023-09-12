@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sekure.Models
 {
@@ -27,7 +28,7 @@ namespace Sekure.Models
         }
     }
 
-    public class InputParameter
+    public class InputParameter : ICloneable
     {
         public string Name { get; set; }
         public int InputParameterId { get; set; }
@@ -39,10 +40,48 @@ namespace Sekure.Models
         public List<ParameterSchema> InputParameterSchemaList { get; set; }
         public List<InputParameter> InputParameterArrayObjectList { get; set; }
 
-        public InputParameter() { }
+        public InputParameter()
+        {
+        }
+        public object Clone()
+        {
+            // Crear una nueva instancia de InputParameter.
+            InputParameter clonedParameter = new InputParameter
+            {
+                // Copiar los valores de las propiedades desde la instancia actual a la nueva instancia.
+                Name = this.Name,
+                InputParameterId = this.InputParameterId,
+                InputParameterType = this.InputParameterType,
+                InputParameterValue = this.InputParameterValue,
+                InputParameterDescription = this.InputParameterDescription,
+                InputParameterRequired = this.InputParameterRequired,
+                ShowApi = this.ShowApi
+            };
+
+            // Clonar las listas si son necesarias (dependiendo de si son objetos mutables).
+            if (this.InputParameterSchemaList != null)
+            {
+                clonedParameter.InputParameterSchemaList = new List<ParameterSchema>(this.InputParameterSchemaList.Count);
+                foreach (var schema in this.InputParameterSchemaList)
+                {
+                    clonedParameter.InputParameterSchemaList.Add((ParameterSchema)schema.Clone());
+                }
+            }
+
+            if (this.InputParameterArrayObjectList != null)
+            {
+                clonedParameter.InputParameterArrayObjectList = new List<InputParameter>(this.InputParameterArrayObjectList.Count);
+                foreach (var parameter in this.InputParameterArrayObjectList)
+                {
+                    clonedParameter.InputParameterArrayObjectList.Add((InputParameter)parameter.Clone());
+                }
+            }
+
+            return clonedParameter;
+        }
     }
 
-    public class ParameterSchema
+    public class ParameterSchema : ICloneable
     {
         public string PropertyId { get; set; }
         public string PropertyName { get; set; }
@@ -54,6 +93,20 @@ namespace Sekure.Models
         public string PropertyRequired { get; set; }
         public string IsAssistanceType { get; set; }
 
-        public ParameterSchema() { }
+        public object Clone()
+        {
+            return new ParameterSchema
+            {
+                PropertyId = this.PropertyId,
+                PropertyName = this.PropertyName,
+                PropertyValue = this.PropertyValue,
+                PropertyDescription = this.PropertyDescription,
+                PropertyTypeDescription = this.PropertyTypeDescription,
+                PropertyTypeId = this.PropertyTypeId,
+                PropertyTypeListValue = this.PropertyTypeListValue,
+                PropertyRequired = this.PropertyRequired,
+                IsAssistanceType = this.IsAssistanceType
+            };
+        }
     }
 }
