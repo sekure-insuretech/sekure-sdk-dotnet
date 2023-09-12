@@ -566,6 +566,22 @@ namespace Sekure.Runtime
             return Configuration;
         }
 
+        public async Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId)
+        {
+            string jsonRequestExecutable = JsonConvert.SerializeObject(requestExecutable);
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/SKR/ValidateStatus/{sessionId}", new StringContent(jsonRequestExecutable, Encoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+            string responseJson = await response.Content.ReadAsStringAsync();
+            ValidationProcess executableRiskValidator = JsonConvert.DeserializeObject<ValidationProcess>(responseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+            return executableRiskValidator;
+        }
         #endregion
     }
 }
