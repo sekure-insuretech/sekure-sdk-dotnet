@@ -210,5 +210,13 @@ namespace Sekure.Runtime
         /// /// <param name="paymentDetail">Important payment detail. 
         /// The object type property allows to be configured to any object that is necessary to get payment status in any of the gateways that sekure has.</param>
         Task<string> UpdateSessionDetail(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// This method is responsible for performing risk validations with tertiary entities before issuing the catalog products. 
+        /// A product can have one or more validators, in case the validator requires information, it dynamically requests it from the end user
+        /// </summary>
+        /// <param name="requestExecutable">This is the object needed to execute the function /// </param>
+        /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
+        Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId);
     }
 }
