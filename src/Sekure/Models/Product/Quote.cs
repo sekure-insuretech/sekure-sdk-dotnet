@@ -10,7 +10,9 @@ namespace Sekure.Models
         public string PlanNumber { get; set; }
         public string PlanName { get; set; }
         public string PremiumAmount { get; set; }
+        public string FormatPremiumAmount { get; set; }
         public string PremiumPaymentInterval { get; set; }
+        public string FormatPremiumPaymentInterval { get; set; }
         public string StartDate { get; set; }
         public string TermTime { get; set; }
         public string InsuredValue { get; set; }
@@ -32,7 +34,30 @@ namespace Sekure.Models
 
         public Quote() { }
 
-        public Quote(Guid sessionId, string planId, string planNumber, string planName, string premiumAmount, string premiumPaymentInterval, string startDate, string termTime, string insuredValue, string policyNumber, string emailSubject, string emailBody, string emailPolicy, string attachName, List<AdditionalInfo> quoteInfo, List<CoverageResultApi> coverages, List<InfoResultApi> deductible, string expeditionDate, string quoteMessage, List<InfoResultApi> beneficiaries, List<InfoResultApi> gracePeriodsList, List<InputParameter> additionalInfo, List<AdditionalInsured> additionalInsured)
+        public Quote(
+            Guid sessionId, 
+            string planId, 
+            string planNumber, 
+            string planName, 
+            string premiumAmount, 
+            string premiumPaymentInterval, 
+            string formatPremiumPaymentInterval, 
+            string startDate, 
+            string termTime, 
+            string insuredValue, 
+            string policyNumber, 
+            string emailSubject, 
+            string emailBody, 
+            string emailPolicy, 
+            string attachName, 
+            List<AdditionalInfo> quoteInfo, 
+            List<CoverageResultApi> coverages, 
+            List<InfoResultApi> deductible, 
+            string expeditionDate, string quoteMessage, 
+            List<InfoResultApi> beneficiaries, 
+            List<InfoResultApi> gracePeriodsList, 
+            List<InputParameter> additionalInfo, 
+            List<AdditionalInsured> additionalInsured)
         {
             SessionId = sessionId;
             PlanId = planId;
@@ -40,6 +65,7 @@ namespace Sekure.Models
             PlanName = planName;
             PremiumAmount = premiumAmount;
             PremiumPaymentInterval = premiumPaymentInterval;
+            FormatPremiumPaymentInterval = formatPremiumPaymentInterval;
             StartDate = startDate;
             TermTime = termTime;
             InsuredValue = insuredValue;
