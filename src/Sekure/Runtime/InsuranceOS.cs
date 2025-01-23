@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Sekure.Models;
-using System.Text;
-using System;
 using Sekure.Models.RiskValidator;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Sekure.Runtime
 {
@@ -22,7 +22,7 @@ namespace Sekure.Runtime
             this.apiKey = apiKey;
             _client = client;
         }
-        
+
         public InsuranceOS(string apiUrl, string apiKey, string clientIpAddress, HttpClient client)
         {
             this.apiUrl = apiUrl;
@@ -112,9 +112,9 @@ namespace Sekure.Runtime
             }
 
             string quotedProductJson = await response.Content.ReadAsStringAsync();
-            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(quotedProductJson, new JsonSerializerSettings 
-            { 
-                NullValueHandling = NullValueHandling.Ignore, 
+            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(quotedProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore
             });
 
@@ -229,6 +229,58 @@ namespace Sekure.Runtime
             });
 
             return policy;
+        }
+
+        public async Task<IEnumerable<PresubscribedByIds>> GetProductsByTenant()
+        {
+            var response = await GetClient().GetAsync($"{apiUrl}/Products/ByTenant");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responseJson = await response.Content.ReadAsStringAsync();
+            IEnumerable<PresubscribedByIds> presubscribeds = JsonConvert.DeserializeObject<IEnumerable<PresubscribedByIds>>(responseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return presubscribeds;
+        }
+
+        public async Task<IEnumerable<CalculationInfo>> GetCalculationInfoById(int id)
+        {
+            var response = await GetClient().GetAsync($"{apiUrl}/Products/CalculationInfoById/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responseJson = await response.Content.ReadAsStringAsync();
+            IEnumerable<CalculationInfo> calculationsInfo = JsonConvert.DeserializeObject<IEnumerable<CalculationInfo>>(responseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return calculationsInfo;
+        }
+
+        public async Task<bool> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate)
+        {
+            string jsonCalculationInfo = JsonConvert.SerializeObject(calculationInfoUpdate);
+
+            HttpResponseMessage response = await GetClient().PutAsync($"{apiUrl}/CalculationInfo/Update", new StringContent(jsonCalculationInfo, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            return Convert.ToBoolean(result);
         }
 
         #endregion
@@ -469,9 +521,9 @@ namespace Sekure.Runtime
 
         public async Task<string> ConfirmPayment(PaymentDetail paymentDetail)
         {
-            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail); 
-            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ConfirmPayment", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json")); 
-            
+            string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ConfirmPayment", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
@@ -490,7 +542,7 @@ namespace Sekure.Runtime
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
 
-            string responsePayment = await response.Content.ReadAsStringAsync(); 
+            string responsePayment = await response.Content.ReadAsStringAsync();
             return responsePayment;
         }
 
