@@ -233,5 +233,25 @@ namespace Sekure.Runtime
         /// <param name="requestExecutable">This is the object needed to execute the function /// </param>
         /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
         Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId);
+
+        /// <summary>
+        /// Gets the products assigned to the client
+        /// Send a GetProductsByTenant request to InsuranceOS API./>.
+        /// </summary>
+        Task<IEnumerable<PresubscribedByIds>> GetProductsByTenant();
+
+        /// <summary>
+        /// Gets all calculationInfo for a specific product
+        /// Send a GetCalculationInfoById request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="id">This is the product id.</param>
+        Task<IEnumerable<CalculationInfo>> GetCalculationInfoById(int id);
+
+        /// <summary>
+        /// Update calculationInfo
+        /// Send a UpdateCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="calculationInfoUpdate">This is the data new canculation.</param>
+        Task<bool> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate);
     }
 }
