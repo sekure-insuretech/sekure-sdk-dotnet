@@ -3,6 +3,7 @@ using Sekure.Models;
 using Sekure.Models.RiskValidator;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -249,16 +250,40 @@ namespace Sekure.Runtime
             return presubscribeds;
         }
 
-        public async Task<IEnumerable<CalculationInfo>> GetCalculationInfoById(int id)
+        public async Task<Paginator> GetCalculationInfoById(
+            IEnumerable<int?> calculationInfoTypeIds
+            , string searchterm
+            , int presubscribedId
+            , int? pageNumber
+            , int? pageSize
+        )
         {
-            var response = await GetClient().GetAsync($"{apiUrl}/Products/CalculationInfoById/{id}");
+            StringBuilder queryParams = new StringBuilder();
+            string CALCULATION_INFO_TYPE_IDS = "calculationInfoTypeIds";
+            string PAGE_NUMBER = "pageNumber";
+            string PAGE_SIZE = "pageSize";
+            string SEARCH_TERM = "searchterm";
+
+            if (calculationInfoTypeIds.Any())
+                queryParams.Append($"{CALCULATION_INFO_TYPE_IDS}={string.Join(",", calculationInfoTypeIds)}");
+
+            if (pageNumber != default(int))
+                queryParams.Append($"&{PAGE_NUMBER}={pageNumber}");
+
+            if (pageSize != default(int))
+                queryParams.Append($"&{PAGE_SIZE}={pageSize}");
+
+            if (!string.IsNullOrEmpty(searchterm))
+                queryParams.Append($"&{SEARCH_TERM}={searchterm}");
+
+            var response = await GetClient().GetAsync($"{apiUrl}/CalculationInfo/ListByPresubscribedId/{presubscribedId}?{queryParams}");
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
             }
 
             string responseJson = await response.Content.ReadAsStringAsync();
-            IEnumerable<CalculationInfo> calculationsInfo = JsonConvert.DeserializeObject<IEnumerable<CalculationInfo>>(responseJson, new JsonSerializerSettings
+            Paginator calculationsInfo = JsonConvert.DeserializeObject<Paginator>(responseJson, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore
@@ -267,7 +292,7 @@ namespace Sekure.Runtime
             return calculationsInfo;
         }
 
-        public async Task<bool> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate)
+        public async Task<IdUpdatedResponse> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate)
         {
             string jsonCalculationInfo = JsonConvert.SerializeObject(calculationInfoUpdate);
 
@@ -280,7 +305,55 @@ namespace Sekure.Runtime
 
             string result = await response.Content.ReadAsStringAsync();
 
-            return Convert.ToBoolean(result);
+            IdUpdatedResponse idUpdatedResponse = JsonConvert.DeserializeObject<IdUpdatedResponse>(result, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return idUpdatedResponse;
+        }
+
+        public async Task<IdCreateResponse> CreateCalculationInfo(CalculationInfo calculationInfo)
+        {
+            string jsonCalculationInfo = JsonConvert.SerializeObject(calculationInfo);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/CalculationInfo/Add", new StringContent(jsonCalculationInfo, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            IdCreateResponse idCreateResponse = JsonConvert.DeserializeObject<IdCreateResponse>(result, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return idCreateResponse;
+        }
+
+        public async Task<IdDeletedResponse> DeleteCalculationInfo(int presubscribedId, int calculationInfoId)
+        {
+            HttpResponseMessage response = await GetClient().DeleteAsync($"{apiUrl}/CalculationInfo/delete/presubscribedId={presubscribedId}&calculationInfoId={calculationInfoId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            IdDeletedResponse idDeletedResponse = JsonConvert.DeserializeObject<IdDeletedResponse>(result, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return idDeletedResponse;
         }
 
         #endregion

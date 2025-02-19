@@ -241,17 +241,42 @@ namespace Sekure.Runtime
         Task<IEnumerable<PresubscribedByIds>> GetProductsByTenant();
 
         /// <summary>
-        /// Gets all calculationInfo for a specific product
+        /// Gets all calculationInfo with paginator for a specific product
         /// Send a GetCalculationInfoById request to InsuranceOS API./>.
         /// </summary>
-        /// <param name="id">This is the product id.</param>
-        Task<IEnumerable<CalculationInfo>> GetCalculationInfoById(int id);
+        /// <param name="calculationInfoTypeIds">Ids the calculation infos.</param>
+        /// <param name="searchterm">Input the search by name and descriptions.</param>
+        /// <param name="presubscribedId">This is the product id.</param>
+        /// <param name="pageNumber">Number of pages the pagination.</param>
+        /// <param name="pageSize">Size of pages the pagination.</param>
+        Task<Paginator> GetCalculationInfoById(
+            IEnumerable<int?> calculationInfoTypeIds
+            , string searchterm
+            , int presubscribedId
+            , int? pageNumber
+            , int? pageSize
+        );
 
         /// <summary>
         /// Update calculationInfo
         /// Send a UpdateCalculationInfo request to InsuranceOS API./>.
         /// </summary>
         /// <param name="calculationInfoUpdate">This is the data new canculation.</param>
-        Task<bool> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate);
+        Task<IdUpdatedResponse> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate);
+
+        /// <summary>
+        /// Create calculationInfo
+        /// Send a CreateCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="calculationInfo">This is the data new canculation.</param>
+        Task<IdCreateResponse> CreateCalculationInfo(CalculationInfo calculationInfo);
+
+        /// <summary>
+        /// Delete calculationInfo
+        /// Send a DeleteCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="presubscribedId">This is the product id.</param>
+        /// <param name="presubscribedId">This is the calculationInfo id.</param>
+        Task<IdDeletedResponse> DeleteCalculationInfo(int presubscribedId, int calculationInfoId);
     }
 }
