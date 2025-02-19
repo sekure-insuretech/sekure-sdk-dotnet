@@ -233,5 +233,50 @@ namespace Sekure.Runtime
         /// <param name="requestExecutable">This is the object needed to execute the function /// </param>
         /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
         Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId);
+
+        /// <summary>
+        /// Gets the products assigned to the client
+        /// Send a GetProductsByTenant request to InsuranceOS API./>.
+        /// </summary>
+        Task<IEnumerable<PresubscribedByIds>> GetProductsByTenant();
+
+        /// <summary>
+        /// Gets all calculationInfo with paginator for a specific product
+        /// Send a GetCalculationInfoById request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="calculationInfoTypeIds">Ids the calculation infos.</param>
+        /// <param name="searchterm">Input the search by name and descriptions.</param>
+        /// <param name="presubscribedId">This is the product id.</param>
+        /// <param name="pageNumber">Number of pages the pagination.</param>
+        /// <param name="pageSize">Size of pages the pagination.</param>
+        Task<Paginator> GetCalculationInfoById(
+            IEnumerable<int?> calculationInfoTypeIds
+            , string searchterm
+            , int presubscribedId
+            , int? pageNumber
+            , int? pageSize
+        );
+
+        /// <summary>
+        /// Update calculationInfo
+        /// Send a UpdateCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="calculationInfoUpdate">This is the data new canculation.</param>
+        Task<IdUpdatedResponse> UpdateCalculationInfo(CalculationInfoUpdate calculationInfoUpdate);
+
+        /// <summary>
+        /// Create calculationInfo
+        /// Send a CreateCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="calculationInfo">This is the data new canculation.</param>
+        Task<IdCreateResponse> CreateCalculationInfo(CalculationInfo calculationInfo);
+
+        /// <summary>
+        /// Delete calculationInfo
+        /// Send a DeleteCalculationInfo request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="presubscribedId">This is the product id.</param>
+        /// <param name="presubscribedId">This is the calculationInfo id.</param>
+        Task<IdDeletedResponse> DeleteCalculationInfo(int presubscribedId, int calculationInfoId);
     }
 }
