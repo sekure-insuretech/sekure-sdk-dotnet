@@ -27,6 +27,19 @@ namespace Sekure.Models
         public string CompanyPostalCode { get; set; }
         public string CompanyStreetNumber { get; set; }
         public string CompanyAddress { get; set; }
+        public string CompanyCity { get; set; }
+        public string AddressTypeId { get; set; }
+        public string Nationality { get; set; }
+        public string PersonType { get; set; }
+        public string StreetNumber { get; set; }
+        public string CellNumber { get; set; }
+        public string Department { get; set; }
+        public string DepartmentCode { get; set; }
+        public string Birthplace { get; set; }
+        public string Neighborhood { get; set; }
+        public string CountryPlace { get; set; }
+        public string DepartmentPlace { get; set; }
+        public string CityPlace { get; set; }
 
         public PolicyHolder(string firstName, string secondName, string lastName, string secondLastName, string gender, string address, string identificationType, string identificationNumber, DateTime? birthdate, string maritalStatus, string email, string phoneNumber)
         {
