@@ -9,15 +9,13 @@ namespace Sekure.Models
         public ProductDetail ProductDetail { get; set; }
         public PolicyHolder PolicyHolder { get; set; }
         public List<InputParameter> Parameters { get; set; }
-        public Guid SessionId { get; set; }
 
-        public ExecutableProduct(string marketingTracking, ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters, Guid id)
+        public ExecutableProduct(string marketingTracking, ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters)
         {
             MarketingTracking = marketingTracking;
             ProductDetail = productDetail;
             PolicyHolder = policyHolder;
             Parameters = parameters;
-            SessionId = id;
         }
 
         public ExecutableProduct() { }
