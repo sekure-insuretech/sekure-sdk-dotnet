@@ -2,23 +2,35 @@
 {
     public class CalculationInfoUpdate
     {
-        public CalculationInfoUpdate(int id, int presubscribedId, string description, string value, int type)
-        {
-            Id = id;
-            PresubscribedId = presubscribedId;
-            Description = description;
-            Value = value;
-            Type = type;
-        }
-
         public CalculationInfoUpdate()
         {
+            
+        }
+        public CalculationInfoUpdate(
+            int id
+            , string name
+            , string description
+            , int presubscribedId
+            , int calculationInfoTypeId
+            , string value
+            , int order
+        )
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            PresubscribedId = presubscribedId;
+            CalculationInfoTypeId = calculationInfoTypeId;
+            Value = value;
+            Order = order;
         }
 
         public int Id { get; set; }
-        public int PresubscribedId { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
+        public int PresubscribedId { get; set; }
+        public int CalculationInfoTypeId { get; set; }
         public string Value { get; set; }
-        public int Type { get; set; }
+        public int Order { get; set; }
     }
 }
