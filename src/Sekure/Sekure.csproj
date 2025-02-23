@@ -1,25 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>2021</Copyright>
+    <Copyright>2025</Copyright>
     <PackageTags>Insurance</PackageTags>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>2.4.0</Version>
+    <Version>2.4.2</Version>
     <Description>Insurance as a service. Official Sekure SDK for .Net</Description>
     <RepositoryUrl>https://github.com/sekure-insuretech/sekure-sdk-dotnet</RepositoryUrl>
     <PackageProjectUrl>https://api.sekure.com.co</PackageProjectUrl>
     <AssemblyVersion>1.0.12.0</AssemblyVersion>
     <FileVersion>1.0.12.0</FileVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Models\Estimate\" />
     <Folder Include="Models\Audit\" />
@@ -28,13 +21,15 @@
     <Folder Include="Models\Session\" />
     <Folder Include="Resources\" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Resources\logo.png">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>
+      </PackagePath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>
