@@ -1,6 +1,6 @@
 ﻿namespace Sekure.Models
 {
-    public class Paginator
+    public class CalculationInfoWithPaginator
     {
         public CalculationInfo[] Items { get; set; }
         public int TotalItems { get; set; }

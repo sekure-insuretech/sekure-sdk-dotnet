@@ -257,7 +257,7 @@ namespace Sekure.Runtime
         /// <param name="presubscribedId">This is the product id.</param>
         /// <param name="pageNumber">Number of pages the pagination.</param>
         /// <param name="pageSize">Size of pages the pagination.</param>
-        Task<Paginator> GetCalculationInfoById(
+        Task<CalculationInfoWithPaginator> GetCalculationInfoById(
             IEnumerable<int?> calculationInfoTypeIds
             , string searchterm
             , int presubscribedId
