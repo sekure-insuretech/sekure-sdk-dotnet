@@ -10,6 +10,9 @@ namespace Sekure.Models
         public ProductDetail ProductDetail { get; set; }
         public PolicyHolder PolicyHolder { get; set; }
         public List<Quote> Quotes { get; set; }
+        public bool PaymentGatewaySkr { get; set; }
+        public int Status { get; set; }
+        public int StatusReport { get; set; }
         public QuotedProduct()
         {
 

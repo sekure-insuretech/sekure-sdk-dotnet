@@ -11,6 +11,9 @@ namespace Sekure.Models
         public virtual TenantContact TenantContact { get; set; }
         public Guid SessionId { get; set; }
         public virtual Session Session { get; set; }
+        public int? Status { get; set; }
+        public int? StatusReport { get; set; }
+        public int? IdProduct { get; set; }
 
         public Estimate() { }
 

@@ -1,4 +1,5 @@
-﻿using Sekure.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Sekure.Models;
 using Sekure.Models.RiskValidator;
 using System;
 using System.Collections.Generic;
@@ -202,6 +203,13 @@ namespace Sekure.Runtime
         /// </summary>
         /// <param name="paymentDetail">Important payment detail. 
         Task<string> ConfirmPayment(PaymentDetail paymentDetail);
+
+        /// <summary>
+        /// Confirm a payment version 1.
+        /// Send a PostAsync request to InsuranceOS API./>.
+        /// </summary>
+        /// <param name="req">Important http request. 
+        Task<string> ConfirmPaymentV1(HttpRequest req);
 
         /// <summary>
         /// Returns information about the status of the payment of the policy.

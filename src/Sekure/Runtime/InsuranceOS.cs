@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Sekure.Models;
 using Sekure.Models.RiskValidator;
 using System;
@@ -596,6 +597,19 @@ namespace Sekure.Runtime
         {
             string jsonPaymentDetail = JsonConvert.SerializeObject(paymentDetail);
             HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ConfirmPayment", new StringContent(jsonPaymentDetail, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync(); return responsePayment;
+        }
+
+        public async Task<string> ConfirmPaymentV1(HttpRequest req)
+        {
+            string jsonReq = JsonConvert.SerializeObject(req);
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/ConfirmPaymentV1", new StringContent(jsonReq, Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
             {
