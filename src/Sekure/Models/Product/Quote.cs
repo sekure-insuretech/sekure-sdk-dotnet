@@ -16,13 +16,13 @@ namespace Sekure.Models
         public string StartDate { get; set; }
         public string TermTime { get; set; }
         public string InsuredValue { get; set; }
-
         public string PolicyNumber { get; set; }
         public string EmailSubject { get; set; }
         public string EmailBody { get; set; }
         public string EmailPolicy { get; set; }
         public string AttachName { get; set; }
         public List<AdditionalInfo> QuoteInfo { get; set; }
+        public List<Periodicities> Periodicities { get; set; }
         public List<CoverageResultApi> Coverages { get; set; }
         public List<InfoResultApi> Deductible { get; set; }
         public string ExpeditionDate { get; set; }
@@ -85,7 +85,15 @@ namespace Sekure.Models
             AdditionalInsured = additionalInsured;
         }
     }
-
+    public class Periodicities
+    {
+        public string Type { get; set; }
+        public int PremiumPaymentIntervalWithoutTaxes { get; set; }
+        public string FormatPremiumPaymentIntervalWithoutTaxes { get; set; }
+        public int PremiumPaymentIntervalTaxes { get; set; }
+        public int PremiumPaymentInterval { get; set; }
+        public string FormatPremiumPaymentInterval { get; set; }
+    }
     public class CoverageResultApi
     {
         public string TypeCoverage { get; set; }
@@ -95,6 +103,7 @@ namespace Sekure.Models
         public string DeductibleResult { get; set; }
         public string IsAssistanceResult { get; set; }
         public string AmountInsurance { get; set; }
+        public bool ShowCoverage { get; set; }
 
         public CoverageResultApi() { }
     }
