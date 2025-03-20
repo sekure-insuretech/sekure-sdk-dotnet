@@ -251,7 +251,7 @@ namespace Sekure.Runtime
             return presubscribeds;
         }
 
-        public async Task<Paginator> GetCalculationInfoById(
+        public async Task<CalculationInfoWithPaginator> GetCalculationInfoById(
             IEnumerable<int?> calculationInfoTypeIds
             , string searchterm
             , int presubscribedId
@@ -284,7 +284,7 @@ namespace Sekure.Runtime
             }
 
             string responseJson = await response.Content.ReadAsStringAsync();
-            Paginator calculationsInfo = JsonConvert.DeserializeObject<Paginator>(responseJson, new JsonSerializerSettings
+            CalculationInfoWithPaginator calculationsInfo = JsonConvert.DeserializeObject<CalculationInfoWithPaginator>(responseJson, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore
