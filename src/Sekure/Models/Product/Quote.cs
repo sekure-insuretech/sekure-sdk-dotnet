@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sekure.Models
 {
-    public class Quote
+    public class Quote : ICloneable
     {
         public Guid SessionId { get; set; }
         public string PlanId { get; set; }
@@ -84,6 +84,141 @@ namespace Sekure.Models
             AdditionalInfo = additionalInfo;
             AdditionalInsured = additionalInsured;
         }
+
+        public object Clone()
+        {
+            // Crear una nueva instancia de Quote.
+            Quote clonedQuote = new Quote
+            {
+                SessionId = this.SessionId,
+                PlanId = this.PlanId,
+                PlanNumber = this.PlanNumber,
+                PlanName = this.PlanName,
+                PremiumAmount = this.PremiumAmount,
+                FormatPremiumAmount = this.FormatPremiumAmount,
+                PremiumPaymentInterval = this.PremiumPaymentInterval,
+                FormatPremiumPaymentInterval = this.FormatPremiumPaymentInterval,
+                StartDate = this.StartDate,
+                TermTime = this.TermTime,
+                InsuredValue = this.InsuredValue,
+                PolicyNumber = this.PolicyNumber,
+                EmailSubject = this.EmailSubject,
+                EmailBody = this.EmailBody,
+                EmailPolicy = this.EmailPolicy,
+                AttachName = this.AttachName,
+                ExpeditionDate = this.ExpeditionDate,
+                QuoteMessage = this.QuoteMessage
+            };
+
+            // Clonar las listas si son necesarias (dependiendo de si son objetos mutables).
+            if (this.QuoteInfo != null)
+            {
+                clonedQuote.QuoteInfo = new List<AdditionalInfo>(this.QuoteInfo.Count);
+                foreach (var info in this.QuoteInfo)
+                {
+                    clonedQuote.QuoteInfo.Add(new AdditionalInfo(info.Name, info.Description, info.Value));
+                }
+            }
+
+            if (this.Periodicities != null)
+            {
+                clonedQuote.Periodicities = new List<Periodicities>(this.Periodicities.Count);
+                foreach (var periodicity in this.Periodicities)
+                {
+                    clonedQuote.Periodicities.Add(new Periodicities
+                    {
+                        Type = periodicity.Type,
+                        PremiumPaymentIntervalWithoutTaxes = periodicity.PremiumPaymentIntervalWithoutTaxes,
+                        FormatPremiumPaymentIntervalWithoutTaxes = periodicity.FormatPremiumPaymentIntervalWithoutTaxes,
+                        PremiumPaymentIntervalTaxes = periodicity.PremiumPaymentIntervalTaxes,
+                        PremiumPaymentInterval = periodicity.PremiumPaymentInterval,
+                        FormatPremiumPaymentInterval = periodicity.FormatPremiumPaymentInterval
+                    });
+                }
+            }
+
+            if (this.Coverages != null)
+            {
+                clonedQuote.Coverages = new List<CoverageResultApi>(this.Coverages.Count);
+                foreach (var coverage in this.Coverages)
+                {
+                    clonedQuote.Coverages.Add(new CoverageResultApi
+                    {
+                        TypeCoverage = coverage.TypeCoverage,
+                        NameResult = coverage.NameResult,
+                        ValueResult = coverage.ValueResult,
+                        DescriptionResult = coverage.DescriptionResult,
+                        DeductibleResult = coverage.DeductibleResult,
+                        IsAssistanceResult = coverage.IsAssistanceResult,
+                        AmountInsurance = coverage.AmountInsurance,
+                        ShowCoverage = coverage.ShowCoverage
+                    });
+                }
+            }
+
+            if (this.Deductible != null)
+            {
+                clonedQuote.Deductible = new List<InfoResultApi>(this.Deductible.Count);
+                foreach (var deductible in this.Deductible)
+                {
+                    clonedQuote.Deductible.Add(new InfoResultApi
+                    {
+                        NameResult = deductible.NameResult,
+                        ValueResult = deductible.ValueResult,
+                        ComentsResult = deductible.ComentsResult
+                    });
+                }
+            }
+
+            if (this.Beneficiaries != null)
+            {
+                clonedQuote.Beneficiaries = new List<InfoResultApi>(this.Beneficiaries.Count);
+                foreach (var beneficiary in this.Beneficiaries)
+                {
+                    clonedQuote.Beneficiaries.Add(new InfoResultApi
+                    {
+                        NameResult = beneficiary.NameResult,
+                        ValueResult = beneficiary.ValueResult,
+                        ComentsResult = beneficiary.ComentsResult
+                    });
+                }
+            }
+
+            if (this.GracePeriodsList != null)
+            {
+                clonedQuote.GracePeriodsList = new List<InfoResultApi>(this.GracePeriodsList.Count);
+                foreach (var gracePeriod in this.GracePeriodsList)
+                {
+                    clonedQuote.GracePeriodsList.Add(new InfoResultApi
+                    {
+                        NameResult = gracePeriod.NameResult,
+                        ValueResult = gracePeriod.ValueResult,
+                        ComentsResult = gracePeriod.ComentsResult
+                    });
+                }
+            }
+
+            if (this.AdditionalInfo != null)
+            {
+                clonedQuote.AdditionalInfo = new List<InputParameter>(this.AdditionalInfo.Count);
+                foreach (var info in this.AdditionalInfo)
+                {
+                    clonedQuote.AdditionalInfo.Add((InputParameter)info.Clone());
+                }
+            }
+
+            if (this.AdditionalInsured != null)
+            {
+                clonedQuote.AdditionalInsured = new List<AdditionalInsured>(this.AdditionalInsured.Count);
+                foreach (var insured in this.AdditionalInsured)
+                {
+                    clonedQuote.AdditionalInsured.Add(new AdditionalInsured(insured.Name, insured.Description, insured.Value, insured.Coverages));
+                }
+            }
+
+            return clonedQuote;
+        }
+
     }
     public class Periodicities
     {
