@@ -37,6 +37,7 @@ namespace Sekure.Runtime
         {
             _client.DefaultRequestHeaders.Add("skr-key", apiKey);
             _client.DefaultRequestHeaders.Add("client-ip-address", clientIpAddress);
+            _client.Timeout = TimeSpan.FromMinutes(5);
             return _client;
         }
 
