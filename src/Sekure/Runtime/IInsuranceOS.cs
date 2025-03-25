@@ -241,6 +241,7 @@ namespace Sekure.Runtime
         /// <param name="requestExecutable">This is the object needed to execute the function /// </param>
         /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
         Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId);
+        Task<ValidationProcess> RiskStatusByProduct(string productName, Guid sessionId);
 
         /// <summary>
         /// Gets the products assigned to the client
