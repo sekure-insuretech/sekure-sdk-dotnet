@@ -136,7 +136,7 @@ namespace Sekure.Runtime
         /// /// <param name="paymentGatewayName">Name of the payment gateway</param>
         /// <param name="productName">product name of the payment gateway</param>
         Task<PaymentGatewayProduct> GetPaymentGatewayConfiguration(string paymentGatewayName, string productName);
-
+        Task<string> GetSessionByTransactionSkrId(string transactionSkrId);
         /// <summary>
         /// Start a payment session with the chosen gateway returns the url where the payment can be made.
         /// Send a PostAsync request to InsuranceOS API./>.

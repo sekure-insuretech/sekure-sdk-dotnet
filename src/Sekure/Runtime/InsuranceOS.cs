@@ -647,6 +647,19 @@ namespace Sekure.Runtime
             string responsePayment = await response.Content.ReadAsStringAsync();
             return responsePayment;
         }
+
+        public async Task<string> GetSessionByTransactionSkrId(string transactionSkrId)
+        {
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/GetSessionByTransactionSkrId/{transactionSkrId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string responsePayment = await response.Content.ReadAsStringAsync();
+            return responsePayment;
+        }
         #endregion
 
         #region AskSekure
