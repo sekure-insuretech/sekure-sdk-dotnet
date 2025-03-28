@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sekure.Models.RiskValidator
 {
@@ -11,5 +12,7 @@ namespace Sekure.Models.RiskValidator
         public List<object> Help { get; set; }
         public string Status { get; set; }
         public string InfoValidationProcess { get; set; }
+        public string AdditionalMessage { get; set; }
+        public Guid SubSessionId { get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace Sekure.Models.RiskValidator
         public string Detail { get; set; }
         public string TransactionSkrId { get; set; }
         public string InfoValidationProcess { get; set; }
+        public bool RunAgainWithoutSteps { get; set; }
+        public Guid SubSessionId { get; set; }
         public string IdentificatorId { get; set; }
     }
 }
