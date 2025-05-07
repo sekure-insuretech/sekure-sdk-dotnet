@@ -13,6 +13,10 @@ namespace Sekure.Models
         public string FormatPremiumAmount { get; set; }
         public string PremiumPaymentInterval { get; set; }
         public string FormatPremiumPaymentInterval { get; set; }
+        public string LocalFormatPremiumPaymentInterval { get; set; }
+        public string PremiumPaymentIntervalTaxes { get; set; }
+        public string FormatPremiumPaymentIntervalWithoutTaxes { get; set; }
+        public string PremiumPaymentIntervalWithoutTaxes { get; set; }
         public string StartDate { get; set; }
         public string TermTime { get; set; }
         public string InsuredValue { get; set; }
@@ -228,6 +232,7 @@ namespace Sekure.Models
         public int PremiumPaymentIntervalTaxes { get; set; }
         public int PremiumPaymentInterval { get; set; }
         public string FormatPremiumPaymentInterval { get; set; }
+        public string LocalFormatPremiumPaymentInterval { get; set; }
     }
     public class CoverageResultApi
     {
