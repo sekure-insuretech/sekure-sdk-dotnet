@@ -244,8 +244,25 @@ namespace Sekure.Models
         public string IsAssistanceResult { get; set; }
         public string AmountInsurance { get; set; }
         public bool ShowCoverage { get; set; }
-
+        public List<SubCoverage> SubCoverages { get; set; }
         public CoverageResultApi() { }
+    }
+    public class SubCoverage
+    {
+        public string Typecoverage { get; set; }
+        public string NameResult { get; set; }
+        public string ValueResult { get; set; }
+        public string DescriptionResult { get; set; }
+
+        public SubCoverage() { }
+
+        public SubCoverage(string typecoverage, string nameResult, string valueResult, string descriptionResult)
+        {
+            Typecoverage = typecoverage;
+            NameResult = nameResult;
+            ValueResult = valueResult;
+            DescriptionResult = descriptionResult;
+        }
     }
     public class InfoResultApi
     {
