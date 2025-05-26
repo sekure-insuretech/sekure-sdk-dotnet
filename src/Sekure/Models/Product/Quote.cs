@@ -14,6 +14,7 @@ namespace Sekure.Models
         public string PremiumPaymentInterval { get; set; }
         public string FormatPremiumPaymentInterval { get; set; }
         public string LocalFormatPremiumPaymentInterval { get; set; }
+        public string LocalPremiumPaymentInterval { get; set; }
         public string PremiumPaymentIntervalTaxes { get; set; }
         public string FormatPremiumPaymentIntervalWithoutTaxes { get; set; }
         public string PremiumPaymentIntervalWithoutTaxes { get; set; }
