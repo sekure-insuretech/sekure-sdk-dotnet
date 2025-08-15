@@ -37,6 +37,8 @@ namespace Sekure.Models
         public string InputParameterDescription { get; set; }
         public string InputParameterRequired { get; set; }
         public bool ShowApi { get; set; }
+        public string RegularExpressionPattern { get; set; }
+        public string RegularExpressionErrorMessage { get; set; }
         public List<ParameterSchema> InputParameterSchemaList { get; set; }
         public List<InputParameter> InputParameterArrayObjectList { get; set; }
 
@@ -55,7 +57,11 @@ namespace Sekure.Models
                 InputParameterValue = this.InputParameterValue,
                 InputParameterDescription = this.InputParameterDescription,
                 InputParameterRequired = this.InputParameterRequired,
-                ShowApi = this.ShowApi
+                ShowApi = this.ShowApi,
+                RegularExpressionPattern = this.RegularExpressionPattern,
+                RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
+                InputParameterSchemaList = this.InputParameterSchemaList,
+                InputParameterArrayObjectList = this.InputParameterArrayObjectList
             };
 
             // Clonar las listas si son necesarias (dependiendo de si son objetos mutables).
@@ -92,6 +98,9 @@ namespace Sekure.Models
         public string PropertyTypeListValue { get; set; }
         public string PropertyRequired { get; set; }
         public string IsAssistanceType { get; set; }
+        public string RegularExpressionPattern { get; set; }
+        public string RegularExpressionErrorMessage { get; set; }
+        public bool? IsRegexAllowed { get; set; }
 
         public object Clone()
         {
@@ -105,7 +114,8 @@ namespace Sekure.Models
                 PropertyTypeId = this.PropertyTypeId,
                 PropertyTypeListValue = this.PropertyTypeListValue,
                 PropertyRequired = this.PropertyRequired,
-                IsAssistanceType = this.IsAssistanceType
+                IsAssistanceType = this.IsAssistanceType,
+                IsRegexAllowed = this.IsRegexAllowed
             };
         }
     }
