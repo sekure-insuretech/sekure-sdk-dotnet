@@ -115,6 +115,8 @@ namespace Sekure.Models
                 PropertyTypeListValue = this.PropertyTypeListValue,
                 PropertyRequired = this.PropertyRequired,
                 IsAssistanceType = this.IsAssistanceType,
+                RegularExpressionPattern = this.RegularExpressionPattern,
+                RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
                 IsRegexAllowed = this.IsRegexAllowed
             };
         }
