@@ -36,32 +36,36 @@ namespace Sekure.Models
         public List<InfoResultApi> GracePeriodsList { get; set; }
         public List<InputParameter> AdditionalInfo { get; set; }
         public List<AdditionalInsured> AdditionalInsured { get; set; }
+        public string OtherInformation { get; set; }
+        public List<PolicyBeneficiaries> PolicyBeneficiaries { get; set; }
+        public string UrlsPolicyBeneficiaries { get; set; }
+
 
         public Quote() { }
 
         public Quote(
-            Guid sessionId, 
-            string planId, 
-            string planNumber, 
-            string planName, 
-            string premiumAmount, 
-            string premiumPaymentInterval, 
-            string formatPremiumPaymentInterval, 
-            string startDate, 
-            string termTime, 
-            string insuredValue, 
-            string policyNumber, 
-            string emailSubject, 
-            string emailBody, 
-            string emailPolicy, 
-            string attachName, 
-            List<AdditionalInfo> quoteInfo, 
-            List<CoverageResultApi> coverages, 
-            List<InfoResultApi> deductible, 
-            string expeditionDate, string quoteMessage, 
-            List<InfoResultApi> beneficiaries, 
-            List<InfoResultApi> gracePeriodsList, 
-            List<InputParameter> additionalInfo, 
+            Guid sessionId,
+            string planId,
+            string planNumber,
+            string planName,
+            string premiumAmount,
+            string premiumPaymentInterval,
+            string formatPremiumPaymentInterval,
+            string startDate,
+            string termTime,
+            string insuredValue,
+            string policyNumber,
+            string emailSubject,
+            string emailBody,
+            string emailPolicy,
+            string attachName,
+            List<AdditionalInfo> quoteInfo,
+            List<CoverageResultApi> coverages,
+            List<InfoResultApi> deductible,
+            string expeditionDate, string quoteMessage,
+            List<InfoResultApi> beneficiaries,
+            List<InfoResultApi> gracePeriodsList,
+            List<InputParameter> additionalInfo,
             List<AdditionalInsured> additionalInsured)
         {
             SessionId = sessionId;
@@ -189,6 +193,36 @@ namespace Sekure.Models
                 }
             }
 
+            if (this.PolicyBeneficiaries != null)
+            {
+                clonedQuote.PolicyBeneficiaries = new List<PolicyBeneficiaries>(this.PolicyBeneficiaries.Count);
+                foreach (var beneficiary in this.PolicyBeneficiaries)
+                {
+                    clonedQuote.PolicyBeneficiaries.Add(new PolicyBeneficiaries
+                    {
+                        FullName = beneficiary.FullName,
+                        Birthdate = beneficiary.Birthdate,
+                        IdentificationType = beneficiary.IdentificationType,
+                        IdentificationNumber = beneficiary.IdentificationNumber,
+                        FirstName = beneficiary.FirstName,
+                        SecondName = beneficiary.SecondName,
+                        LastName = beneficiary.LastName,
+                        SecondLastName = beneficiary.SecondLastName,
+                        CellNumber = beneficiary.CellNumber,
+                        Email = beneficiary.Email,
+                        DepartamentCode = beneficiary.DepartamentCode,
+                        Departament = beneficiary.Departament,
+                        CityCode = beneficiary.CityCode,
+                        City = beneficiary.City,
+                        Gender = beneficiary.Gender,
+                        Ocupation = beneficiary.Ocupation,
+                        Adress = beneficiary.Adress,
+                        State = beneficiary.State,
+                        Observation = beneficiary.Observation
+                    });
+                }
+            }
+
             if (this.GracePeriodsList != null)
             {
                 clonedQuote.GracePeriodsList = new List<InfoResultApi>(this.GracePeriodsList.Count);
@@ -224,6 +258,29 @@ namespace Sekure.Models
             return clonedQuote;
         }
 
+    }
+
+    public class PolicyBeneficiaries
+    {
+        public string FullName { get; set; }
+        public string Birthdate { get; set; }
+        public string IdentificationType { get; set; }
+        public string IdentificationNumber { get; set; }
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public string LastName { get; set; }
+        public string SecondLastName { get; set; }
+        public string CellNumber { get; set; }
+        public string Email { get; set; }
+        public string DepartamentCode { get; set; }
+        public string Departament { get; set; }
+        public string CityCode { get; set; }
+        public string City { get; set; }
+        public string Gender { get; set; }
+        public string Ocupation { get; set; }
+        public string Adress { get; set; }
+        public string State { get; set; }
+        public string Observation { get; set; }
     }
     public class Periodicities
     {
