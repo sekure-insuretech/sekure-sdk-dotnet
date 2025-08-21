@@ -210,13 +210,13 @@ namespace Sekure.Models
                         SecondLastName = beneficiary.SecondLastName,
                         CellNumber = beneficiary.CellNumber,
                         Email = beneficiary.Email,
-                        DepartamentCode = beneficiary.DepartamentCode,
-                        Departament = beneficiary.Departament,
+                        DepartmentCode = beneficiary.DepartmentCode,
+                        Department = beneficiary.Department,
                         CityCode = beneficiary.CityCode,
                         City = beneficiary.City,
                         Gender = beneficiary.Gender,
                         Ocupation = beneficiary.Ocupation,
-                        Adress = beneficiary.Adress,
+                        Address = beneficiary.Address,
                         State = beneficiary.State,
                         Observation = beneficiary.Observation
                     });
@@ -272,13 +272,13 @@ namespace Sekure.Models
         public string SecondLastName { get; set; }
         public string CellNumber { get; set; }
         public string Email { get; set; }
-        public string DepartamentCode { get; set; }
-        public string Departament { get; set; }
+        public string DepartmentCode { get; set; }
+        public string Department { get; set; }
         public string CityCode { get; set; }
         public string City { get; set; }
         public string Gender { get; set; }
         public string Ocupation { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string State { get; set; }
         public string Observation { get; set; }
     }
