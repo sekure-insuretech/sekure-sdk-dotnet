@@ -272,9 +272,11 @@ namespace Sekure.Models
         public string SecondLastName { get; set; }
         public string CellNumber { get; set; }
         public string Email { get; set; }
+        public string DepartmentName { get; set; }
         public string DepartmentCode { get; set; }
         public string Department { get; set; }
         public string CityCode { get; set; }
+        public string CityName { get; set; }
         public string City { get; set; }
         public string Gender { get; set; }
         public string Ocupation { get; set; }
