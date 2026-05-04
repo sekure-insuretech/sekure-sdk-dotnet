@@ -736,6 +736,23 @@ namespace Sekure.Runtime
             return executableRiskValidator;
         }
 
+        public async Task<Tuple<bool, List<ValidationProcess>>> GetValidationProcessByTransactionSkrId(RequestExecutable requestExecutable, Guid sessionId)
+        {
+            string jsonRequestExecutable = JsonConvert.SerializeObject(requestExecutable);
+            HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/SKR/GetValidationProcessByTransactionSkrId/{sessionId}");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+            string responseJson = await response.Content.ReadAsStringAsync();
+            Tuple<bool, List<ValidationProcess>> executableRiskValidator = JsonConvert.DeserializeObject<Tuple<bool, List<ValidationProcess>>>(responseJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+            return executableRiskValidator;
+        }
+
         public async Task<ValidationProcess> RiskStatusByProduct(string productName, Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/SKR/RiskStatusByProduct/{productName}/{sessionId}");

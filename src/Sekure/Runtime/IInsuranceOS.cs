@@ -242,7 +242,7 @@ namespace Sekure.Runtime
         /// <param name="sessionId">This is the session id with which the quote was registered /// </param>
         Task<ValidationProcess> ValidateStatus(RequestExecutable requestExecutable, Guid sessionId);
         Task<ValidationProcess> RiskStatusByProduct(string productName, Guid sessionId);
-
+        Task<Tuple<bool, List<ValidationProcess>>> GetValidationProcessByTransactionSkrId(RequestExecutable requestExecutable, Guid sessionId);
         /// <summary>
         /// Gets the products assigned to the client
         /// Send a GetProductsByTenant request to InsuranceOS API./>.

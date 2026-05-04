@@ -41,6 +41,8 @@ namespace Sekure.Models
         public string RegularExpressionErrorMessage { get; set; }
         public List<ParameterSchema> InputParameterSchemaList { get; set; }
         public List<InputParameter> InputParameterArrayObjectList { get; set; }
+        public bool IsPII { get; set; }
+        public bool IsSearchable { get; set; }
 
         public InputParameter()
         {
@@ -101,6 +103,8 @@ namespace Sekure.Models
         public string RegularExpressionPattern { get; set; }
         public string RegularExpressionErrorMessage { get; set; }
         public bool? IsRegexAllowed { get; set; }
+        public bool IsPII { get; set; }
+        public bool IsSearchable { get; set; }
 
         public object Clone()
         {
