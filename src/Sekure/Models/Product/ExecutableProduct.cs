@@ -43,6 +43,7 @@ namespace Sekure.Models
         public List<InputParameter> InputParameterArrayObjectList { get; set; }
         public bool IsPII { get; set; }
         public bool IsSearchable { get; set; }
+        public int Step { get; set; }
 
         public InputParameter()
         {
