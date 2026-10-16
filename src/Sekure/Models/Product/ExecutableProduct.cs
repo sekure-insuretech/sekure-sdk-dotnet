@@ -70,6 +70,8 @@ namespace Sekure.Models
                 RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
                 InputParameterSchemaList = this.InputParameterSchemaList,
                 InputParameterArrayObjectList = this.InputParameterArrayObjectList,
+                IsPII = this.IsPII,
+                IsSearchable = this.IsSearchable,
                 Step = this.Step,
                 SaveTableIntegrityToken = this.SaveTableIntegrityToken,
             };
@@ -129,7 +131,9 @@ namespace Sekure.Models
                 IsAssistanceType = this.IsAssistanceType,
                 RegularExpressionPattern = this.RegularExpressionPattern,
                 RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
-                IsRegexAllowed = this.IsRegexAllowed
+                IsRegexAllowed = this.IsRegexAllowed,
+                IsPII = this.IsPII,
+                IsSearchable = this.IsSearchable
             };
         }
     }

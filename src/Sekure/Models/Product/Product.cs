@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sekure.Models
 {
@@ -10,6 +11,8 @@ namespace Sekure.Models
         public List<InputParameter> Confirm { get; set; }
         public List<InputParameter> ToEmit { get; set; }
         public List<AskSekure> AskSekure { get; set; }
+        [NotMapped]
+        public List<IntegrityTokenValue> IntegrityTokensValues { get; set; }
         public Product() { }
 
         public Product(ProductDetail productDetail, List<object> policyHolder, List<InputParameter> quote, List<InputParameter> confirm, List<InputParameter> toEmit)

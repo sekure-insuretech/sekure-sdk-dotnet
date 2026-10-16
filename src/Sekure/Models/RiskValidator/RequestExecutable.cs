@@ -4,5 +4,6 @@
     {
         public string ValidatorKey { get; set; }
         public object Parameters { get; set; }
+        public int? Step { get; set; }
     }
 }

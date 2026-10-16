@@ -3,14 +3,16 @@
     public class CalculationInfo
     {
         public CalculationInfo(
-            int id
-            , string name
-            , string description
-            , int presubscribedId
-            , int calculationInfoTypeId
-            , string value
-            , int? order
-        )
+            int id,
+            string name,
+            string description,
+            int presubscribedId,
+            int calculationInfoTypeId,
+            string value,
+            int? order,
+            int? classificationId = null,
+            bool? isProcessEditable = null,
+            bool showAdmin = true)
         {
             Id = id;
             Name = name;
@@ -19,6 +21,9 @@
             CalculationInfoTypeId = calculationInfoTypeId;
             Value = value;
             Order = order;
+            ClassificationId = classificationId;
+            IsProcessEditable = isProcessEditable;
+            ShowAdmin = showAdmin;
         }
 
         public int Id { get; set; }
@@ -28,5 +33,8 @@
         public int CalculationInfoTypeId { get; set; }
         public string Value { get; set; }
         public int? Order { get; set; }
+        public int? ClassificationId { get; set; }
+        public bool? IsProcessEditable { get; set; }
+        public bool ShowAdmin { get; set; } = true;
     }
 }

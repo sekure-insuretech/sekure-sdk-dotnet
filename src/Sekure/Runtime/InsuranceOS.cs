@@ -126,7 +126,11 @@ namespace Sekure.Runtime
 
         public async Task<QuotedProduct> UpdateQuote(ExecutableProduct executableProduct, Guid sessionId)
         {
-            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
 
             HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/UpdateQuote/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
 
