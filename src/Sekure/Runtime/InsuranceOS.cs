@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Sekure.Models;
+using Sekure.Models.Endorsement;
 using Sekure.Models.RiskValidator;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -793,6 +796,249 @@ namespace Sekure.Runtime
             });
             return executableRiskValidator;
         }
+        #endregion
+
+        #region Endorsement
+        private static readonly JsonSerializerSettings EndorsementJsonSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        #region Endosos - listado y detalle
+
+        public Task<EndorsementSearchResponse> SearchEndorsements(EndorsementSearchRequest request, string customerEmail)
+            => SendEndorsementJson<EndorsementSearchResponse>(HttpMethod.Post, "Endorsement/search", request, customerEmail, null);
+
+        public Task<EndorsementDetailResponse> GetEndorsementDetail(Guid endorsementId, string customerEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Get, $"Endorsement/{endorsementId}/detail", null, customerEmail, null);
+
+        public Task<EndorsementResponse> GetEndorsementById(Guid endorsementId, string customerEmail)
+            => SendEndorsementJson<EndorsementResponse>(HttpMethod.Get, $"Endorsement/{endorsementId}", null, customerEmail, null);
+
+        public Task<EndorsementPagedResponse> GetEndorsements(int skip, int take, string customerEmail)
+            => SendEndorsementJson<EndorsementPagedResponse>(HttpMethod.Get, $"Endorsement?skip={skip}&take={take}", null, customerEmail, null);
+
+        #endregion
+
+        #region Endosos - registro y edición
+
+        public Task<EndorsementWriteResponse> CreateEndorsement(EndorsementUpsertRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementWriteResponse>(HttpMethod.Post, "Endorsement", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementWriteResponse> UpdateEndorsement(Guid endorsementId, EndorsementUpsertRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementWriteResponse>(HttpMethod.Put, $"Endorsement/{endorsementId}", request, customerEmail, RequireUser(userEmail));
+
+        public Task DeleteEndorsement(Guid endorsementId, string customerEmail, string userEmail)
+            => SendEndorsementNoContent(HttpMethod.Delete, $"Endorsement/{endorsementId}", customerEmail, RequireUser(userEmail));
+
+        #endregion
+
+        #region Endosos - acciones de gestión
+
+        public Task<EndorsementDetailResponse> RenewEndorsement(Guid endorsementId, RenewEndorsementRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/renew", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> RejectEndorsementPerson(Guid endorsementId, RejectPersonRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/reject", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> MarkClientManagement(Guid endorsementId, ClientManagementRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/client-management", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> MarkEndorsementInProcess(Guid endorsementId, InProcessRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/in-process", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> ReassignEndorsement(Guid endorsementId, ReassignRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/reassign", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> AddEndorsementNote(Guid endorsementId, NoteRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/notes", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> SendEndorsementReminder(Guid endorsementId, ReminderRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/reminders", request, customerEmail, RequireUser(userEmail));
+
+        public Task<EndorsementDetailResponse> RegeneratePortalLink(Guid endorsementId, ReminderRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/portal-link/regenerate", request, customerEmail, RequireUser(userEmail));
+
+        #endregion
+
+        #region Endosos - documentos
+
+        public async Task<UploadDocumentResponse> UploadEndorsementDocument(Guid endorsementId, Stream file, string fileName, string contentType, byte personRole, byte documentType, string customerEmail, string userEmail)
+        {
+            if (file == null) throw new ArgumentNullException(nameof(file));
+
+            using (var form = new MultipartFormDataContent())
+            {
+                var filePart = new StreamContent(file);
+                filePart.Headers.ContentType = new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(contentType) ? "application/octet-stream" : contentType);
+                form.Add(filePart, "Files[0]", fileName);
+                form.Add(new StringContent(personRole.ToString()), "personRole");
+                form.Add(new StringContent(documentType.ToString()), "documentType");
+
+                using (var message = BuildEndorsementMessage(HttpMethod.Post, $"Endorsement/{endorsementId}/documents", customerEmail, RequireUser(userEmail)))
+                {
+                    message.Content = form;
+                    return await SendAndRead<UploadDocumentResponse>(message);
+                }
+            }
+        }
+
+        public Task<List<DocumentListItemResponse>> GetEndorsementDocuments(Guid endorsementId, string customerEmail)
+            => SendEndorsementJson<List<DocumentListItemResponse>>(HttpMethod.Get, $"Endorsement/{endorsementId}/documents", null, customerEmail, null);
+
+        public Task<SekureFile> DownloadEndorsementDocument(Guid publicId, string customerEmail)
+            => SendEndorsementFile(HttpMethod.Get, $"Endorsement/documents/{publicId}", null, customerEmail, null);
+
+        public Task DeleteEndorsementDocument(Guid publicId, string customerEmail, string userEmail)
+            => SendEndorsementNoContent(HttpMethod.Delete, $"Endorsement/documents/{publicId}", customerEmail, RequireUser(userEmail));
+
+        #endregion
+
+        #region Endosos - comunicación de inclusión en la colectiva
+
+        public Task<CollectiveNoticePreview> GetCollectiveNoticePreview(Guid endorsementId, byte role, string customerEmail)
+            => SendEndorsementJson<CollectiveNoticePreview>(HttpMethod.Get, $"Endorsement/{endorsementId}/collective-notice?role={role}", null, customerEmail, null);
+
+        public Task<EndorsementDetailResponse> SendCollectiveNotice(Guid endorsementId, CollectiveNoticeRequest request, string customerEmail, string userEmail)
+            => SendEndorsementJson<EndorsementDetailResponse>(HttpMethod.Post, $"Endorsement/{endorsementId}/collective-notice", request, customerEmail, RequireUser(userEmail));
+
+        #endregion
+
+        #region Endosos - importación y exportación
+
+        public Task<SekureFile> ExportEndorsements(EndorsementExportRequest request, string customerEmail, string userEmail)
+            => SendEndorsementFile(HttpMethod.Post, "Endorsement/export", request, customerEmail, RequireUser(userEmail));
+
+        public async Task<StartImportResponse> StartEndorsementImport(Stream file, string fileName, byte productType, byte endorsementType, string customerEmail, string userEmail)
+        {
+            if (file == null) throw new ArgumentNullException(nameof(file));
+
+            using (var form = new MultipartFormDataContent())
+            {
+                var filePart = new StreamContent(file);
+                filePart.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                form.Add(filePart, "file", fileName);
+                form.Add(new StringContent(productType.ToString()), "productType");
+                form.Add(new StringContent(endorsementType.ToString()), "endorsementType");
+
+                using (var message = BuildEndorsementMessage(HttpMethod.Post, "Endorsement/import", customerEmail, RequireUser(userEmail)))
+                {
+                    message.Content = form;
+                    return await SendAndRead<StartImportResponse>(message);
+                }
+            }
+        }
+
+        public Task<EndorsementImportJobResponse> GetEndorsementImportJob(Guid jobId, string customerEmail)
+            => SendEndorsementJson<EndorsementImportJobResponse>(HttpMethod.Get, $"Endorsement/import/{jobId}", null, customerEmail, null);
+
+        public Task<SekureFile> GetEndorsementImportTemplate(byte endorsementType)
+            => SendEndorsementFile(HttpMethod.Get, $"Endorsement/import/template/{endorsementType}", null, null, null);
+
+        #endregion
+
+        #region Endosos - reportes
+
+        public Task<EndorsementReportResponse> GetEndorsementReport(EndorsementReportRequest request, string customerEmail)
+            => SendEndorsementJson<EndorsementReportResponse>(HttpMethod.Post, "Endorsement/reports", request, customerEmail, null);
+
+        public Task<SekureFile> ExportEndorsementReport(EndorsementReportRequest request, string customerEmail, string userEmail)
+            => SendEndorsementFile(HttpMethod.Post, "Endorsement/reports/export", request, customerEmail, RequireUser(userEmail));
+
+        #endregion
+
+        #region Endosos - resumen PDF
+
+        public Task<SekureFile> GetEndorsementSummaryPdf(Guid endorsementId, string customerEmail, string userEmail = null)
+            => SendEndorsementFile(HttpMethod.Get, $"Endorsement/{endorsementId}/summary-pdf", null, customerEmail, userEmail);
+
+        #endregion
+
+        #region Endosos - helpers
+
+        private static string RequireUser(string userEmail)
+        {
+            if (string.IsNullOrWhiteSpace(userEmail))
+                throw new ArgumentException("user-email es obligatorio para esta operación.", nameof(userEmail));
+            return userEmail;
+        }
+
+        private HttpRequestMessage BuildEndorsementMessage(HttpMethod method, string path, string customerEmail, string userEmail)
+        {
+            var message = new HttpRequestMessage(method, $"{apiUrl.TrimEnd('/')}/{path}");
+
+            // Si GetClient() ya agregó estos headers al cliente compartido, no se repiten.
+            if (!_client.DefaultRequestHeaders.Contains("skr-key"))
+                message.Headers.TryAddWithoutValidation("skr-key", apiKey);
+            if (!_client.DefaultRequestHeaders.Contains("client-ip-address") && !string.IsNullOrEmpty(clientIpAddress))
+                message.Headers.TryAddWithoutValidation("client-ip-address", clientIpAddress);
+
+            if (!string.IsNullOrWhiteSpace(customerEmail))
+                message.Headers.TryAddWithoutValidation("customer-email", customerEmail);
+            if (!string.IsNullOrWhiteSpace(userEmail))
+                message.Headers.TryAddWithoutValidation("user-email", userEmail);
+
+            return message;
+        }
+
+        private async Task<T> SendEndorsementJson<T>(HttpMethod method, string path, object body, string customerEmail, string userEmail)
+        {
+            using (var message = BuildEndorsementMessage(method, path, customerEmail, userEmail))
+            {
+                if (body != null)
+                    message.Content = new StringContent(JsonConvert.SerializeObject(body, EndorsementJsonSettings), Encoding.UTF8, "application/json");
+                return await SendAndRead<T>(message);
+            }
+        }
+
+        private async Task SendEndorsementNoContent(HttpMethod method, string path, string customerEmail, string userEmail)
+        {
+            using (var message = BuildEndorsementMessage(method, path, customerEmail, userEmail))
+            using (var response = await _client.SendAsync(message))
+            {
+                await EnsureEndorsementSuccess(response);
+            }
+        }
+
+        private async Task<SekureFile> SendEndorsementFile(HttpMethod method, string path, object body, string customerEmail, string userEmail)
+        {
+            using (var message = BuildEndorsementMessage(method, path, customerEmail, userEmail))
+            {
+                if (body != null)
+                    message.Content = new StringContent(JsonConvert.SerializeObject(body, EndorsementJsonSettings), Encoding.UTF8, "application/json");
+
+                using (var response = await _client.SendAsync(message))
+                {
+                    await EnsureEndorsementSuccess(response);
+                    var headers = response.Content.Headers;
+                    return new SekureFile
+                    {
+                        Content = await response.Content.ReadAsByteArrayAsync(),
+                        ContentType = headers.ContentType?.MediaType ?? "application/octet-stream",
+                        FileName = headers.ContentDisposition?.FileNameStar ?? headers.ContentDisposition?.FileName?.Trim('"')
+                    };
+                }
+            }
+        }
+
+        private async Task<T> SendAndRead<T>(HttpRequestMessage message)
+        {
+            using (var response = await _client.SendAsync(message))
+            {
+                await EnsureEndorsementSuccess(response);
+                var json = await response.Content.ReadAsStringAsync();
+                return string.IsNullOrWhiteSpace(json) ? default : JsonConvert.DeserializeObject<T>(json, EndorsementJsonSettings);
+            }
+        }
+
+        private static async Task EnsureEndorsementSuccess(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode) return;
+            var body = response.Content == null ? null : await response.Content.ReadAsStringAsync();
+            throw new SekureApiException((int)response.StatusCode, body);
+        }
+
+        #endregion
         #endregion
     }
 }
