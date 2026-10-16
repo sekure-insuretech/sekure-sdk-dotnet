@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Sekure.Models;
+using Sekure.Models.Endorsement;
 using Sekure.Models.RiskValidator;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Sekure.Runtime
@@ -290,5 +292,51 @@ namespace Sekure.Runtime
         /// <param name="presubscribedId">This is the product id.</param>
         /// <param name="presubscribedId">This is the calculationInfo id.</param>
         Task<IdDeletedResponse> DeleteCalculationInfo(int presubscribedId, int calculationInfoId);
+
+        #region Endorsements
+        // ── Listado y detalle ─────────────────────────────────────────────
+        Task<EndorsementSearchResponse> SearchEndorsements(EndorsementSearchRequest request, string customerEmail);
+        Task<EndorsementDetailResponse> GetEndorsementDetail(Guid endorsementId, string customerEmail);
+        Task<EndorsementResponse> GetEndorsementById(Guid endorsementId, string customerEmail);
+        Task<EndorsementPagedResponse> GetEndorsements(int skip, int take, string customerEmail);
+
+        // ── Registro y edición ────────────────────────────────────────────
+        Task<EndorsementWriteResponse> CreateEndorsement(EndorsementUpsertRequest request, string customerEmail, string userEmail);
+        Task<EndorsementWriteResponse> UpdateEndorsement(Guid endorsementId, EndorsementUpsertRequest request, string customerEmail, string userEmail);
+        Task DeleteEndorsement(Guid endorsementId, string customerEmail, string userEmail);
+
+        // ── Acciones de gestión ───────────────────────────────────────────
+        Task<EndorsementDetailResponse> RenewEndorsement(Guid endorsementId, RenewEndorsementRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> RejectEndorsementPerson(Guid endorsementId, RejectPersonRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> MarkClientManagement(Guid endorsementId, ClientManagementRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> MarkEndorsementInProcess(Guid endorsementId, InProcessRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> ReassignEndorsement(Guid endorsementId, ReassignRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> AddEndorsementNote(Guid endorsementId, NoteRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> SendEndorsementReminder(Guid endorsementId, ReminderRequest request, string customerEmail, string userEmail);
+        Task<EndorsementDetailResponse> RegeneratePortalLink(Guid endorsementId, ReminderRequest request, string customerEmail, string userEmail);
+
+        // ── Documentos ────────────────────────────────────────────────────
+        Task<UploadDocumentResponse> UploadEndorsementDocument(Guid endorsementId, Stream file, string fileName, string contentType, byte personRole, byte documentType, string customerEmail, string userEmail);
+        Task<List<DocumentListItemResponse>> GetEndorsementDocuments(Guid endorsementId, string customerEmail);
+        Task<SekureFile> DownloadEndorsementDocument(Guid publicId, string customerEmail);
+        Task DeleteEndorsementDocument(Guid publicId, string customerEmail, string userEmail);
+
+        // ── Comunicación de inclusión en la colectiva ─────────────────────
+        Task<CollectiveNoticePreview> GetCollectiveNoticePreview(Guid endorsementId, byte role, string customerEmail);
+        Task<EndorsementDetailResponse> SendCollectiveNotice(Guid endorsementId, CollectiveNoticeRequest request, string customerEmail, string userEmail);
+
+        // ── Importación y exportación ─────────────────────────────────────
+        Task<SekureFile> ExportEndorsements(EndorsementExportRequest request, string customerEmail, string userEmail);
+        Task<StartImportResponse> StartEndorsementImport(Stream file, string fileName, byte productType, byte endorsementType, string customerEmail, string userEmail);
+        Task<EndorsementImportJobResponse> GetEndorsementImportJob(Guid jobId, string customerEmail);
+        Task<SekureFile> GetEndorsementImportTemplate(byte endorsementType);
+
+        // ── Reportes ──────────────────────────────────────────────────────
+        Task<EndorsementReportResponse> GetEndorsementReport(EndorsementReportRequest request, string customerEmail);
+        Task<SekureFile> ExportEndorsementReport(EndorsementReportRequest request, string customerEmail, string userEmail);
+
+        // ── Resumen PDF ───────────────────────────────────────────────────
+        Task<SekureFile> GetEndorsementSummaryPdf(Guid endorsementId, string customerEmail, string userEmail = null);
+        #endregion
     }
 }
