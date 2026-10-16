@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sekure.Models
 {
@@ -14,6 +16,9 @@ namespace Sekure.Models
         public int? Status { get; set; }
         public int? StatusReport { get; set; }
         public int? IdProduct { get; set; }
+
+        [NotMapped]
+        public List<IntegrityTokenValue> IntegrityTokensValues { get; set; }
 
         public Estimate() { }
 

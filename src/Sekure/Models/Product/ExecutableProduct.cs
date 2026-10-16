@@ -8,23 +8,27 @@ namespace Sekure.Models
         public string MarketingTracking { get; set; }
         public ProductDetail ProductDetail { get; set; }
         public PolicyHolder PolicyHolder { get; set; }
+        public bool IsPartialQuote { get; set; }
         public List<InputParameter> Parameters { get; set; }
+        public int Step { get; set; }
 
-        public ExecutableProduct(string marketingTracking, ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters)
+        public ExecutableProduct(string marketingTracking, ProductDetail productDetail, PolicyHolder policyHolder, List<InputParameter> parameters, bool isPartialQuote = false)
         {
             MarketingTracking = marketingTracking;
             ProductDetail = productDetail;
             PolicyHolder = policyHolder;
             Parameters = parameters;
+            IsPartialQuote = isPartialQuote;
         }
 
         public ExecutableProduct() { }
 
-        public ExecutableProduct(ProductDetail productDetail, List<InputParameter> parameters, string marketingTracking)
+        public ExecutableProduct(ProductDetail productDetail, List<InputParameter> parameters, string marketingTracking, bool isPartialQuote = false)
         {
             ProductDetail = productDetail;
             Parameters = parameters;
             MarketingTracking = marketingTracking;
+            IsPartialQuote = isPartialQuote;
         }
     }
 
@@ -44,6 +48,7 @@ namespace Sekure.Models
         public bool IsPII { get; set; }
         public bool IsSearchable { get; set; }
         public int Step { get; set; }
+        public bool SaveTableIntegrityToken { get; set; }
 
         public InputParameter()
         {
@@ -64,7 +69,11 @@ namespace Sekure.Models
                 RegularExpressionPattern = this.RegularExpressionPattern,
                 RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
                 InputParameterSchemaList = this.InputParameterSchemaList,
-                InputParameterArrayObjectList = this.InputParameterArrayObjectList
+                InputParameterArrayObjectList = this.InputParameterArrayObjectList,
+                IsPII = this.IsPII,
+                IsSearchable = this.IsSearchable,
+                Step = this.Step,
+                SaveTableIntegrityToken = this.SaveTableIntegrityToken,
             };
 
             // Clonar las listas si son necesarias (dependiendo de si son objetos mutables).
@@ -122,7 +131,9 @@ namespace Sekure.Models
                 IsAssistanceType = this.IsAssistanceType,
                 RegularExpressionPattern = this.RegularExpressionPattern,
                 RegularExpressionErrorMessage = this.RegularExpressionErrorMessage,
-                IsRegexAllowed = this.IsRegexAllowed
+                IsRegexAllowed = this.IsRegexAllowed,
+                IsPII = this.IsPII,
+                IsSearchable = this.IsSearchable
             };
         }
     }

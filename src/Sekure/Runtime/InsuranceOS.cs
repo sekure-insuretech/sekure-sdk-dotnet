@@ -124,6 +124,31 @@ namespace Sekure.Runtime
             return quotedProduct;
         }
 
+        public async Task<QuotedProduct> UpdateQuote(ExecutableProduct executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/Products/UpdateQuote/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            string quotedProductJson = await response.Content.ReadAsStringAsync();
+            QuotedProduct quotedProduct = JsonConvert.DeserializeObject<QuotedProduct>(quotedProductJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            return quotedProduct;
+        }
+
         public async Task<Policy> Confirm(ExecutableProduct executableProduct, Guid sessionId)
         {
             string jsonProduct = JsonConvert.SerializeObject(executableProduct);

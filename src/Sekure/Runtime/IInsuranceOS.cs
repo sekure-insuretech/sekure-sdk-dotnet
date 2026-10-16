@@ -60,6 +60,8 @@ namespace Sekure.Runtime
         /// It has essential information about the product and the necessary parameters.</param>
         Task<QuotedProductLot> Quote(ExecutatbleProductLot executatbleProductLot);
 
+        Task<QuotedProduct> UpdateQuote(ExecutableProduct executableProduct, Guid sessionId);
+
         /// <summary>
         /// Confirms the purchase of the product and allows to deliver a policy to the policy holder who was registered in the quote.
         /// This method will return a list of all the products available in sekure. 
@@ -136,6 +138,7 @@ namespace Sekure.Runtime
         /// /// <param name="paymentGatewayName">Name of the payment gateway</param>
         /// <param name="productName">product name of the payment gateway</param>
         Task<PaymentGatewayProduct> GetPaymentGatewayConfiguration(string paymentGatewayName, string productName);
+
         Task<string> GetSessionByTransactionSkrId(string transactionSkrId);
         /// <summary>
         /// Start a payment session with the chosen gateway returns the url where the payment can be made.
