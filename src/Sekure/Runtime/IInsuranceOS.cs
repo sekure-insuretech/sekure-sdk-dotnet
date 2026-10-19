@@ -330,6 +330,7 @@ namespace Sekure.Runtime
         Task<StartImportResponse> StartEndorsementImport(Stream file, string fileName, byte productType, byte endorsementType, string customerEmail, string userEmail);
         Task<EndorsementImportJobResponse> GetEndorsementImportJob(Guid jobId, string customerEmail);
         Task<SekureFile> GetEndorsementImportTemplate(byte endorsementType);
+        Task<SekureFile> DownloadEndorsementImportReport(Guid jobId, string customerEmail);
 
         // ── Reportes ──────────────────────────────────────────────────────
         Task<EndorsementReportResponse> GetEndorsementReport(EndorsementReportRequest request, string customerEmail);
