@@ -798,7 +798,6 @@ namespace Sekure.Runtime
         }
         #endregion
 
-        #region Endorsement
         private static readonly JsonSerializerSettings EndorsementJsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore
@@ -935,6 +934,9 @@ namespace Sekure.Runtime
         public Task<SekureFile> GetEndorsementImportTemplate(byte endorsementType)
             => SendEndorsementFile(HttpMethod.Get, $"Endorsement/import/template/{endorsementType}", null, null, null);
 
+        public Task<SekureFile> DownloadEndorsementImportReport(Guid jobId, string customerEmail)
+            => SendEndorsementFile(HttpMethod.Get, $"Endorsement/import/{jobId}/report", null, customerEmail, null);
+
         #endregion
 
         #region Endosos - reportes
@@ -1038,7 +1040,6 @@ namespace Sekure.Runtime
             throw new SekureApiException((int)response.StatusCode, body);
         }
 
-        #endregion
         #endregion
     }
 }
