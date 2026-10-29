@@ -62,6 +62,8 @@ namespace Sekure.Models.Endorsement
         public string AssignedAnalyst { get; set; }
         public byte Status { get; set; }
         public string Observation { get; set; }
+        public string WithdrawalReason { get; set; }
+        public string RetentionManagement { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

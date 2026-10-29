@@ -51,6 +51,8 @@ namespace Sekure.Models.Endorsement
         public DateTime CorbancoDate { get; set; }
         public string Manager { get; set; }
         public string Observation { get; set; }
+        public string WithdrawalReason { get; set; }
+        public string RetentionManagement { get; set; }
 
         // ── Bandera de renovación ─────────────────────────────────────────────
         public bool IsRenewal { get; set; }
