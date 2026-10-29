@@ -19,6 +19,8 @@ namespace Sekure.Models.Endorsement
         public bool IsRenewal { get; set; }
         public string VoBo { get; set; }
         public string AssignedAnalyst { get; set; }
+        public string WithdrawalReason { get; set; }
+        public string RetentionManagement { get; set; }
         public byte Status { get; set; }
 
         // ── Datos del cliente (deudor principal) ──────────────────────────────
