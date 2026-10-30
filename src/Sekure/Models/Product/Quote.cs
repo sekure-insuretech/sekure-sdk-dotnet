@@ -18,29 +18,34 @@ namespace Sekure.Models
         public string PremiumPaymentIntervalTaxes { get; set; }
         public string FormatPremiumPaymentIntervalWithoutTaxes { get; set; }
         public string PremiumPaymentIntervalWithoutTaxes { get; set; }
+        public PremiumDetail Premium { get; set; }
         public string StartDate { get; set; }
         public string TermTime { get; set; }
         public string InsuredValue { get; set; }
         public string PolicyNumber { get; set; }
+        public Dictionary<string, object> DictEmailOtherResponsible { get; set; }
+        public string CopyMail { get; set; }
         public string EmailSubject { get; set; }
         public string EmailBody { get; set; }
         public string EmailPolicy { get; set; }
         public string AttachName { get; set; }
+        public string OptionalEmailArchive { get; set; }
+        public string OptionalEmailFileName { get; set; }
+        public bool IsMustEncrypt { get; set; } = false;
         public List<AdditionalInfo> QuoteInfo { get; set; }
         public List<Periodicities> Periodicities { get; set; }
+        public List<InfoResultApi> GracePeriodsList { get; set; }
         public List<CoverageResultApi> Coverages { get; set; }
         public List<InfoResultApi> Deductible { get; set; }
+        public List<InfoResultApi> Limit { get; set; }
         public string ExpeditionDate { get; set; }
         public string QuoteMessage { get; set; }
         public List<InfoResultApi> Beneficiaries { get; set; }
-        public List<InfoResultApi> GracePeriodsList { get; set; }
         public List<InputParameter> AdditionalInfo { get; set; }
         public List<AdditionalInsured> AdditionalInsured { get; set; }
         public string OtherInformation { get; set; }
         public List<PolicyBeneficiaries> PolicyBeneficiaries { get; set; }
         public string UrlsPolicyBeneficiaries { get; set; }
-
-
         public Quote() { }
 
         public Quote(
@@ -111,13 +116,50 @@ namespace Sekure.Models
                 TermTime = this.TermTime,
                 InsuredValue = this.InsuredValue,
                 PolicyNumber = this.PolicyNumber,
+                CopyMail = this.CopyMail,
                 EmailSubject = this.EmailSubject,
                 EmailBody = this.EmailBody,
                 EmailPolicy = this.EmailPolicy,
                 AttachName = this.AttachName,
+                OptionalEmailArchive = this.OptionalEmailArchive,
+                OptionalEmailFileName = this.OptionalEmailFileName,
+                IsMustEncrypt = this.IsMustEncrypt,
                 ExpeditionDate = this.ExpeditionDate,
                 QuoteMessage = this.QuoteMessage
             };
+
+            if (this.Premium != null)
+            {
+                clonedQuote.Premium = new PremiumDetail
+                {
+                    GrossWrittenPremium = this.Premium.GrossWrittenPremium,
+                    PolicyFee = this.Premium.PolicyFee,
+                    TaxesAmount = this.Premium.TaxesAmount,
+                    TaxRate = this.Premium.TaxRate,
+                    NetPremium = this.Premium.NetPremium,
+                    Currency = this.Premium.Currency
+                };
+
+                if (this.Premium.Frequency != null)
+                {
+                    clonedQuote.Premium.Frequency = new List<PremiumFrequency>(this.Premium.Frequency.Count);
+                    foreach (var frequency in this.Premium.Frequency)
+                    {
+                        clonedQuote.Premium.Frequency.Add(new PremiumFrequency
+                        {
+                            Type = frequency.Type,
+                            TotalPremium = frequency.TotalPremium,
+                            PeriodicPremium = frequency.PeriodicPremium,
+                            Installments = frequency.Installments
+                        });
+                    }
+                }
+            }
+
+            if (this.DictEmailOtherResponsible != null)
+            {
+                clonedQuote.DictEmailOtherResponsible = new Dictionary<string, object>(this.DictEmailOtherResponsible);
+            }
 
             // Clonar las listas si son necesarias (dependiendo de si son objetos mutables).
             if (this.QuoteInfo != null)
@@ -175,6 +217,20 @@ namespace Sekure.Models
                         NameResult = deductible.NameResult,
                         ValueResult = deductible.ValueResult,
                         ComentsResult = deductible.ComentsResult
+                    });
+                }
+            }
+
+            if (this.Limit != null)
+            {
+                clonedQuote.Limit = new List<InfoResultApi>(this.Limit.Count);
+                foreach (var limit in this.Limit)
+                {
+                    clonedQuote.Limit.Add(new InfoResultApi
+                    {
+                        NameResult = limit.NameResult,
+                        ValueResult = limit.ValueResult,
+                        ComentsResult = limit.ComentsResult
                     });
                 }
             }
@@ -258,6 +314,24 @@ namespace Sekure.Models
             return clonedQuote;
         }
 
+    }
+    public class PremiumDetail
+    {
+        public string GrossWrittenPremium { get; set; }
+        public string PolicyFee { get; set; }
+        public string TaxesAmount { get; set; }
+        public string TaxRate { get; set; }
+        public string NetPremium { get; set; }
+        public string Currency { get; set; }
+        public List<PremiumFrequency> Frequency { get; set; }
+    }
+
+    public class PremiumFrequency
+    {
+        public string Type { get; set; }
+        public string TotalPremium { get; set; }
+        public string PeriodicPremium { get; set; }
+        public int Installments { get; set; }
     }
 
     public class PolicyBeneficiaries
