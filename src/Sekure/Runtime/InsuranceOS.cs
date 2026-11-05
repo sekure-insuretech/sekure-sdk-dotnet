@@ -225,6 +225,76 @@ namespace Sekure.Runtime
             return result;
         }
 
+        public async Task<QuotedProduct> QuoteV2(ExecutableProduct executableProduct)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/v2/Products/Quote", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            return await ReadV2Response<QuotedProduct>(response);
+        }
+
+        public async Task<QuotedProduct> UpdateQuoteV2(ExecutableProduct executableProduct, Guid sessionId)
+        {
+            // Mismo serializado que UpdateQuote: sin nulos ni valores por defecto.
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/v2/Products/UpdateQuote/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            return await ReadV2Response<QuotedProduct>(response);
+        }
+
+        public async Task<Policy> ConfirmV2(ExecutableProduct executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/v2/Products/Confirm/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            return await ReadV2Response<Policy>(response);
+        }
+
+        public async Task<Policy> EmitV2(ExecutableProduct executableProduct, Guid sessionId)
+        {
+            string jsonProduct = JsonConvert.SerializeObject(executableProduct);
+
+            HttpResponseMessage response = await GetClient().PostAsync($"{apiUrl}/v2/Products/Emit/{sessionId}", new StringContent(jsonProduct, Encoding.UTF8, "application/json"));
+
+            return await ReadV2Response<Policy>(response);
+        }
+
+        public async Task<TransactionStatus> UpdateTransactionStatus(Guid sessionId, int statusId, string comments = null)
+        {
+            string jsonBody = JsonConvert.SerializeObject(new UpdateTransactionStatusRequest { StatusId = statusId, Comments = comments });
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{apiUrl}/v2/Products/UpdateTransactionStatus/{sessionId}")
+            {
+                Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+            };
+
+            HttpResponseMessage response = await GetClient().SendAsync(request);
+
+            return await ReadV2Response<TransactionStatus>(response);
+        }
+
+        // Misma excepción y mismo deserializado que los métodos v1: el SaaS solo cambia el método que llama.
+        private static async Task<T> ReadV2Response<T>(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"statusCode: {response.StatusCode}, messageException: {await response.Content.ReadAsStringAsync()}");
+            }
+
+            string json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+        }
+
         public async Task<ProductStage> GetProductStage(Guid sessionId)
         {
             HttpResponseMessage response = await GetClient().GetAsync($"{apiUrl}/Products/Stage/{sessionId}");

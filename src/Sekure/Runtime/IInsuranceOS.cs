@@ -128,6 +128,41 @@ namespace Sekure.Runtime
         Task<ProductStage> GetProductStage(Guid sessionId);
 
         /// <summary>
+        /// Same as <see cref="Quote(ExecutableProduct)"/>, but the transaction status is written only with the catalog
+        /// statuses (MSParametrics TransactionStatus). Only for products that use the status catalog; any other product gets a 409.
+        /// Send a PostAsync request to InsuranceOS API (v2/Products/Quote).
+        /// </summary>
+        Task<QuotedProduct> QuoteV2(ExecutableProduct executableProduct);
+
+        /// <summary>
+        /// Same as <see cref="UpdateQuote(ExecutableProduct, Guid)"/> with catalog statuses.
+        /// Send a PostAsync request to InsuranceOS API (v2/Products/UpdateQuote/{sessionId}).
+        /// </summary>
+        Task<QuotedProduct> UpdateQuoteV2(ExecutableProduct executableProduct, Guid sessionId);
+
+        /// <summary>
+        /// Same as <see cref="Confirm(ExecutableProduct, Guid)"/> with catalog statuses.
+        /// Send a PostAsync request to InsuranceOS API (v2/Products/Confirm/{sessionId}).
+        /// </summary>
+        Task<Policy> ConfirmV2(ExecutableProduct executableProduct, Guid sessionId);
+
+        /// <summary>
+        /// Same as <see cref="EmitWithPolicy(ExecutableProduct, Guid)"/> with catalog statuses.
+        /// Send a PostAsync request to InsuranceOS API (v2/Products/Emit/{sessionId}).
+        /// </summary>
+        Task<Policy> EmitV2(ExecutableProduct executableProduct, Guid sessionId);
+
+        /// <summary>
+        /// Changes the transaction status of a session to a status of the catalog (for example 5, Cancelled).
+        /// Only for products that use the status catalog. Returns the assigned status.
+        /// Send a PATCH request to InsuranceOS API (v2/Products/UpdateTransactionStatus/{sessionId}).
+        /// </summary>
+        /// <param name="sessionId">This is the session id with which the quote was registered.</param>
+        /// <param name="statusId">Id of the status in the transaction status catalog.</param>
+        /// <param name="comments">Optional reason; it replaces the comments of the lead.</param>
+        Task<TransactionStatus> UpdateTransactionStatus(Guid sessionId, int statusId, string comments = null);
+
+        /// <summary>
         /// Return the estimate associated with the session ID 
         /// Send a GetAsync request to the Insurance API
         /// </summary>
