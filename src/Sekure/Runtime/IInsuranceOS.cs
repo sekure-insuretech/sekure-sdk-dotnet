@@ -177,6 +177,15 @@ namespace Sekure.Runtime
         Task<PaymentGatewayProduct> GetPaymentGatewayConfiguration(string paymentGatewayName, string productName);
 
         Task<string> GetSessionByTransactionSkrId(string transactionSkrId);
+
+        /// <summary>
+        /// Same as <see cref="GetSessionByTransactionSkrId"/>, but if the transaction has an APPROVED payment attempt
+        /// it returns that one even when there are later attempts (e.g. a DECLINED one after paying);
+        /// without approved attempts it returns the most recent one.
+        /// Send a GetAsync request to InsuranceOS API.
+        /// </summary>
+        /// <param name="transactionSkrId">Sekure session id of the transaction.</param>
+        Task<string> GetPrioritizedSessionByTransactionSkrId(string transactionSkrId);
         /// <summary>
         /// Start a payment session with the chosen gateway returns the url where the payment can be made.
         /// Send a PostAsync request to InsuranceOS API./>.
